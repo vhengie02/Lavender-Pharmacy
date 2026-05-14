@@ -1,0 +1,341 @@
+/* Lavender Pharmacy - Custom Styling */
+
+:root {
+    --lavender: #B57EDC;
+    --dark-violet: #5D3A66;
+    --soft-purple: #C8A2C8;
+    --light-lilac: #E6E6FA;
+}
+
+/* General Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Navigation */
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: var(--dark-violet) !important;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Cards */
+.card {
+    border-radius: 8px;
+}
+
+.card-header {
+    background-color: var(--lavender) !important;
+    color: white !important;
+    font-weight: 600;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--lavender);
+    border-color: var(--lavender);
+}
+
+.btn-primary:hover {
+    background-color: #a367d3;
+    border-color: #a367d3;
+}
+
+/* Badges */
+.badge {
+    padding: 0.5rem 0.75rem;
+    font-weight: 500;
+}
+
+/* Forms */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--lavender);
+    box-shadow: 0 0 0 0.2rem rgba(181, 126, 220, 0.25);
+}
+
+/* Tables */
+.table thead th {
+    background-color: var(--light-lilac);
+    color: var(--dark-violet);
+    font-weight: 600;
+    border: none;
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--light-lilac);
+}
+
+/* Alerts */
+.alert {
+    border-radius: 8px;
+    border: none;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.alert-warning a {
+    color: #7d5e0a;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--dark-violet);
+}
+
+/* Links */
+a {
+    color: var(--lavender);
+    text-decoration: none;
+}
+
+a:hover {
+    color: #a367d3;
+    text-decoration: underline;
+}
+
+/* Footer */
+footer {
+    background-color: var(--light-lilac);
+    color: var(--dark-violet);
+    margin-top: auto;
+    border-top: 2px solid var(--lavender);
+}
+
+/* Product Cards */
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 8px;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+/* Status Badge Colors */
+.badge-success {
+    background-color: #28a745;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+}
+
+.badge-info {
+    background-color: #17a2b8;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    background-color: var(--light-lilac);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+.breadcrumb-item.active {
+    color: var(--dark-violet);
+}
+
+.breadcrumb-item a {
+    color: var(--lavender);
+}
+
+/* Pagination */
+.pagination .page-link {
+    color: var(--lavender);
+    border-color: var(--light-lilac);
+}
+
+.pagination .page-link:hover {
+    background-color: var(--light-lilac);
+    color: var(--dark-violet);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--lavender);
+    border-color: var(--lavender);
+}
+
+/* Loading Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+    
+    .btn-group {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .btn-group .btn {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navbar, footer, .btn, [class*="no-print"] {
+        display: none !important;
+    }
+    
+    .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}
+
+/* Custom Utilities */
+.text-lavender {
+    color: var(--lavender);
+}
+
+.text-dark-violet {
+    color: var(--dark-violet);
+}
+
+.bg-lavender-light {
+    background-color: var(--light-lilac);
+}
+
+.border-lavender {
+    border-color: var(--lavender) !important;
+}
+
+/* Form Labels */
+.form-label {
+    color: var(--dark-violet);
+    font-weight: 500;
+}
+
+/* Disabled States */
+:disabled,
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Shadow Effects */
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.shadow {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Image Styling */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.card-img-top {
+    border-radius: 8px 8px 0 0;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.dropdown-item:hover {
+    background-color: var(--light-lilac);
+    color: var(--dark-violet);
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    background-color: var(--lavender);
+}
+
+/* Message Display */
+.alert-dismissible {
+    border-radius: 8px;
+    animation: slideIn 0.3s ease-in;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Modal Styling */
+.modal-content {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    background-color: var(--lavender);
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.modal-header .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+/* Spinner/Loading */
+.spinner-border {
+    color: var(--lavender);
+}
+
+/* Input Groups */
+.input-group .btn {
+    background-color: var(--lavender);
+    border-color: var(--lavender);
+    color: white;
+}
+
+.input-group .form-control:focus {
+    border-color: var(--lavender);
+    box-shadow: 0 0 0 0.2rem rgba(181, 126, 220, 0.25);
+}
