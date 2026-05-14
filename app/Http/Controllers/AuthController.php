@@ -38,7 +38,7 @@ class AuthController extends Controller
             Auth::login($user);
             $user->update(['last_login' => now()]);
 
-            return redirect()->intended($this->getRedirectPath($user->role));
+            return redirect()->intended($this->getRedirectUrl($user->role));
         }
 
         return back()->withErrors(['email' => 'Invalid credentials']);
@@ -87,15 +87,28 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
-    /**
-     * Get redirect path based on user role
-     */
-    private function getRedirectPath($role)
+    public function showForgotPassword()
+    {
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
+        return view('auth.forgot-password');
+    }
+
+    public function sendForgotPasswordLink(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        return back()->with('success', 'If an account exists for that email, password reset instructions would be sent. (Email delivery may need to be configured on the server.)');
+    }
+
+    private function getRedirectUrl(string $role): string
     {
         return match ($role) {
-            'admin' => 'admin.dashboard',
-            'editor' => 'editor.products',
-            default => 'customer.shop',
+            'admin' => route('admin.dashboard'),
+            'editor' => route('editor.dashboard'),
+            default => route('shop'),
         };
     }
 }

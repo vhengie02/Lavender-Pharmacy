@@ -9,7 +9,7 @@
         @if ($orders->isEmpty())
             <div class="mt-10 rounded-xl border border-border bg-card p-10 text-center text-muted-foreground">
                 <p>You have no orders yet.</p>
-                <a href="{{ route('customer.shop') }}" class="mt-4 inline-block text-sm font-medium text-primary hover:underline">Start shopping</a>
+                <a href="{{ route('shop') }}" class="mt-4 inline-block text-sm font-medium text-primary hover:underline">Start shopping</a>
             </div>
         @else
             <div class="mt-8 overflow-hidden rounded-xl border border-border bg-card shadow-sm">

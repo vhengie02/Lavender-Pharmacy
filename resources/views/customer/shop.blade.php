@@ -3,26 +3,20 @@
 @section('title', 'Shop - Lavender Pharmacy')
 
 @section('content')
-    @if (Route::is('home'))
-        <x-landing-hero />
-        <x-landing-services />
-        <x-landing-about />
-    @endif
-
-    <section id="catalog" class="scroll-mt-20 bg-secondary/30 py-16">
+    <section id="catalog" class="scroll-mt-20 bg-secondary/30 py-16 pt-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="mx-auto mb-12 max-w-3xl text-center">
                 <p class="mb-2 text-sm font-medium uppercase tracking-wide text-primary">Catalog</p>
                 <h2 class="font-serif text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Health essentials</h2>
-                <p class="mt-3 text-muted-foreground">Browse our inventory and add items to your cart when signed in.</p>
+                <p class="mt-3 text-muted-foreground">Browse our inventory and add items to your cart.</p>
             </div>
 
             <div class="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-                <form action="{{ auth()->check() ? route('customer.shop') : route('home') }}" method="GET" class="flex w-full max-w-md flex-1 flex-col gap-2 sm:flex-row">
+                <form action="{{ route('shop') }}" method="GET" class="flex w-full max-w-md flex-1 flex-col gap-2 sm:flex-row">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Search products…" class="w-full rounded-lg border border-input bg-card px-4 py-2.5 text-sm text-foreground shadow-sm outline-none ring-ring placeholder:text-muted-foreground focus:border-ring focus:ring-2 focus:ring-ring/30" />
                     <button type="submit" class="shrink-0 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">Search</button>
                 </form>
-                <form action="{{ auth()->check() ? route('customer.shop') : route('home') }}" method="GET" class="w-full max-w-xs">
+                <form action="{{ route('shop') }}" method="GET" class="w-full max-w-xs">
                     <label for="category" class="sr-only">Category</label>
                     <select id="category" name="category" onchange="this.form.submit()" class="w-full rounded-lg border border-input bg-card px-4 py-2.5 text-sm text-foreground shadow-sm outline-none ring-ring focus:border-ring focus:ring-2 focus:ring-ring/30">
                         <option value="">All categories</option>
@@ -36,7 +30,7 @@
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 @forelse ($products as $product)
                     <article class="group flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
-                        <a href="{{ auth()->check() ? route('product.show', $product->product_id) : route('login') }}" class="relative block aspect-square overflow-hidden bg-gradient-to-br from-primary/15 to-accent/20">
+                        <a href="{{ route('product.show', $product->product_id) }}" class="relative block aspect-square overflow-hidden bg-gradient-to-br from-primary/15 to-accent/20">
                             @if ($product->product_image)
                                 <img src="{{ asset('uploads/' . $product->product_image) }}" alt="{{ $product->product_name }}" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
                             @else
@@ -48,7 +42,7 @@
                         <div class="flex flex-1 flex-col p-4">
                             <p class="text-xs font-medium uppercase tracking-wide text-primary">{{ $product->category->category_name ?? 'Product' }}</p>
                             <h3 class="mt-1 font-semibold text-card-foreground group-hover:text-primary">
-                                <a href="{{ auth()->check() ? route('product.show', $product->product_id) : route('login') }}">{{ $product->product_name }}</a>
+                                <a href="{{ route('product.show', $product->product_id) }}">{{ $product->product_name }}</a>
                             </h3>
                             <p class="mt-2 line-clamp-2 text-sm text-muted-foreground">{{ Str::limit($product->description, 100) }}</p>
                             <div class="mt-4 flex items-center justify-between gap-2">
@@ -56,20 +50,16 @@
                                 <span class="rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">{{ $product->stock_quantity }} in stock</span>
                             </div>
                             <div class="mt-4">
-                                @auth
-                                    @if ($product->stock_quantity > 0)
-                                        <form action="{{ route('cart.add') }}" method="POST" class="flex gap-2">
-                                            @csrf
-                                            <input type="hidden" name="product_id" value="{{ $product->product_id }}" />
-                                            <input type="number" name="quantity" value="1" min="1" max="{{ $product->stock_quantity }}" class="w-16 rounded-lg border border-input bg-background px-2 py-2 text-sm" />
-                                            <button type="submit" class="flex-1 rounded-lg border border-border bg-background py-2 text-sm font-medium transition-colors hover:bg-primary hover:text-primary-foreground">Add to cart</button>
-                                        </form>
-                                    @else
-                                        <button type="button" disabled class="w-full cursor-not-allowed rounded-lg border border-border py-2 text-sm text-muted-foreground">Out of stock</button>
-                                    @endif
+                                @if ($product->stock_quantity > 0)
+                                    <form action="{{ route('cart.add') }}" method="POST" class="flex gap-2">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->product_id }}" />
+                                        <input type="number" name="quantity" value="1" min="1" max="{{ $product->stock_quantity }}" class="w-16 rounded-lg border border-input bg-background px-2 py-2 text-sm" />
+                                        <button type="submit" class="flex-1 rounded-lg border border-border bg-background py-2 text-sm font-medium transition-colors hover:bg-primary hover:text-primary-foreground">Add to cart</button>
+                                    </form>
                                 @else
-                                    <a href="{{ route('login') }}" class="block w-full rounded-lg border border-border py-2 text-center text-sm font-medium transition-colors hover:bg-primary hover:text-primary-foreground">Sign in to purchase</a>
-                                @endauth
+                                    <button type="button" disabled class="w-full cursor-not-allowed rounded-lg border border-border py-2 text-sm text-muted-foreground">Out of stock</button>
+                                @endif
                             </div>
                         </div>
                     </article>
@@ -88,8 +78,4 @@
             @endif
         </div>
     </section>
-
-    @if (Route::is('home'))
-        <x-landing-contact />
-    @endif
 @endsection

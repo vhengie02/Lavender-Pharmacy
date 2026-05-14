@@ -4,8 +4,5 @@
 
 @section('content')
     <x-landing-hero />
-    <x-landing-services />
-    <x-landing-about />
-    <x-landing-products />
     <x-landing-contact />
 @endsection

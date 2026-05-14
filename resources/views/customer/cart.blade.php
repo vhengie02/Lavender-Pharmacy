@@ -10,7 +10,7 @@
         @if ($cartItems->isEmpty())
             <div class="mt-10 rounded-xl border border-border bg-card p-10 text-center text-muted-foreground">
                 <p>Your cart is empty.</p>
-                <a href="{{ route('customer.shop') }}" class="mt-4 inline-block text-sm font-medium text-primary hover:underline">Continue shopping</a>
+                <a href="{{ route('shop') }}" class="mt-4 inline-block text-sm font-medium text-primary hover:underline">Continue shopping</a>
             </div>
         @else
             @php

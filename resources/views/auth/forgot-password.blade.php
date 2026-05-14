@@ -3,42 +3,48 @@
 @section('title', 'Reset Password - Lavender Pharmacy')
 
 @section('content')
-    <div class="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 px-4 py-16 pt-24">
-        <div class="w-full max-w-md">
-            <div class="mb-8 text-center">
-                <a href="{{ route('home') }}" class="inline-block">
-                    <x-storefront-logo class="mx-auto h-12 w-auto" />
-                </a>
-            </div>
-
-            <div class="rounded-xl border border-primary/10 bg-card p-8 shadow-lg">
-                <div class="mb-6 text-center">
-                    <h1 class="font-serif text-2xl font-semibold text-foreground">Reset Password</h1>
-                    <p class="mt-1 text-sm text-muted-foreground">Enter your email to receive a password reset link</p>
+    <section class="relative bg-gradient-to-b from-primary/10 to-background pb-12 pt-32">
+        <div class="container mx-auto px-4">
+            <div class="mx-auto max-w-3xl text-center">
+                <div class="mb-6 flex justify-center">
+                    <x-storefront-logo class="h-14 w-auto sm:h-16" />
                 </div>
-
-                @if (session('success'))
-                    <div class="mb-4 rounded-lg border border-primary/20 bg-primary/10 px-4 py-3 text-sm text-foreground">{{ session('success') }}</div>
-                @endif
-
-                <form action="{{ route('password.email') }}" method="POST" class="space-y-4">
-                    @csrf
-                    <div>
-                        <label for="email" class="mb-1.5 block text-sm font-medium text-foreground">Email Address</label>
-                        <input type="email" name="email" id="email" value="{{ old('email') }}" required autocomplete="email"
-                            class="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm text-foreground shadow-sm outline-none ring-ring focus:border-ring focus:ring-2 focus:ring-ring/30 @error('email') border-destructive @enderror"
-                            placeholder="you@example.com" />
-                        @error('email')
-                            <p class="mt-1 text-sm text-destructive">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <button type="submit" class="w-full rounded-lg bg-primary py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">Send reset link</button>
-                </form>
-
-                <p class="mt-6 text-center text-sm text-muted-foreground">
-                    <a href="{{ route('login') }}" class="font-medium text-primary hover:underline">Back to Sign In</a>
+                <p class="mb-2 text-sm font-medium uppercase tracking-wide text-primary">Account</p>
+                <h1 class="text-balance font-serif text-4xl font-bold tracking-tight text-foreground md:text-5xl">Reset password</h1>
+                <p class="mx-auto mt-4 max-w-xl text-pretty text-lg text-muted-foreground">
+                    Enter the email you use for Lavender Pharmacy and we’ll send reset instructions if an account exists.
                 </p>
             </div>
         </div>
-    </div>
+    </section>
+
+    <section class="border-b border-border bg-secondary/30 py-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-md">
+                <div class="rounded-xl border border-border bg-card p-8 shadow-sm">
+                    @if (session('success'))
+                        <div class="mb-6 rounded-lg border border-primary/20 bg-primary/10 px-4 py-3 text-sm text-foreground">{{ session('success') }}</div>
+                    @endif
+
+                    <form action="{{ route('password.email') }}" method="POST" class="space-y-5">
+                        @csrf
+                        <div>
+                            <label for="email" class="mb-1.5 block text-sm font-medium text-foreground">Email</label>
+                            <input type="email" name="email" id="email" value="{{ old('email') }}" required autocomplete="email"
+                                class="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring/30 @error('email') border-destructive @enderror"
+                                placeholder="you@example.com" />
+                            @error('email')
+                                <p class="mt-1 text-sm text-destructive">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <button type="submit" class="w-full rounded-lg bg-primary py-3 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90">Send reset link</button>
+                    </form>
+
+                    <p class="mt-8 border-t border-border pt-6 text-center text-sm text-muted-foreground">
+                        <a href="{{ route('login') }}" class="font-medium text-primary hover:underline">Back to sign in</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
 @endsection

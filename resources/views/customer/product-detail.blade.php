@@ -8,7 +8,7 @@
             <ol class="flex flex-wrap items-center gap-2">
                 <li><a href="{{ route('home') }}" class="hover:text-primary">Home</a></li>
                 <li>/</li>
-                <li><a href="{{ route('customer.shop') }}" class="hover:text-primary">Shop</a></li>
+                <li><a href="{{ route('shop') }}" class="hover:text-primary">Shop</a></li>
                 <li>/</li>
                 <li class="text-foreground">{{ $product->product_name }}</li>
             </ol>
@@ -85,7 +85,7 @@
                     @else
                         <button type="button" disabled class="cursor-not-allowed rounded-lg border border-border px-6 py-2.5 text-sm text-muted-foreground">Unavailable</button>
                     @endif
-                    <a href="{{ route('customer.shop') }}" class="inline-flex items-center justify-center rounded-lg border border-border px-6 py-2.5 text-sm font-medium hover:bg-secondary">Back to shop</a>
+                    <a href="{{ route('shop') }}" class="inline-flex items-center justify-center rounded-lg border border-border px-6 py-2.5 text-sm font-medium hover:bg-secondary">Back to shop</a>
                 </div>
             </div>
         </div>
