@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products', 'product_id');
             $table->integer('quantity');
             $table->decimal('price', 10, 2);
-            $table->index('order_id');
         });
     }
 
