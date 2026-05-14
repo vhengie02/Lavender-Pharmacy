@@ -1,89 +1,80 @@
-@extends('layouts.app')
+@extends('layouts.storefront')
 
 @section('title', 'Shopping Cart - Lavender Pharmacy')
 
 @section('content')
-<div class="row mb-4">
-    <div class="col-md-12">
-        <h1 style="color: #5D3A66;"><i class="fas fa-shopping-cart"></i> Shopping Cart</h1>
-    </div>
-</div>
+    <div class="mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6 lg:px-8">
+        <h1 class="font-serif text-3xl font-bold text-foreground">Shopping cart</h1>
+        <p class="mt-2 text-muted-foreground">Review your items before checkout.</p>
 
-@if($cartItems->isEmpty())
-    <div class="alert alert-info" role="alert">
-        Your cart is empty. <a href="{{ route('customer.shop') }}">Continue shopping</a>
-    </div>
-@else
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Subtotal</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($cartItems as $item)
+        @if ($cartItems->isEmpty())
+            <div class="mt-10 rounded-xl border border-border bg-card p-10 text-center text-muted-foreground">
+                <p>Your cart is empty.</p>
+                <a href="{{ route('customer.shop') }}" class="mt-4 inline-block text-sm font-medium text-primary hover:underline">Continue shopping</a>
+            </div>
+        @else
+            @php
+                $subtotal = $cartItems->sum(fn ($item) => $item->product->price * $item->quantity);
+                $vat = $subtotal * 0.12;
+                $total = $subtotal + $vat;
+            @endphp
+            <div class="mt-10 grid gap-8 lg:grid-cols-3">
+                <div class="lg:col-span-2">
+                    <div class="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                        <table class="min-w-full divide-y divide-border text-sm">
+                            <thead class="bg-secondary/50">
                                 <tr>
-                                    <td>
-                                        {{ $item->product->product_name }}<br>
-                                        <small class="text-muted">{{ $item->product->category->category_name ?? 'N/A' }}</small>
-                                    </td>
-                                    <td>₱{{ number_format($item->product->price, 2) }}</td>
-                                    <td>
-                                        <form action="{{ route('cart.update', $item->cart_id) }}" method="POST" class="d-flex">
-                                            @csrf
-                                            @method('PUT')
-                                            <input type="number" name="quantity" class="form-control form-control-sm" value="{{ $item->quantity }}" min="1" style="width: 60px;">
-                                            <button type="submit" class="btn btn-sm btn-outline-primary ms-1">Update</button>
-                                        </form>
-                                    </td>
-                                    <td>₱{{ number_format($item->product->price * $item->quantity, 2) }}</td>
-                                    <td>
-                                        <form action="{{ route('cart.remove', $item->cart_id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">Remove</button>
-                                        </form>
-                                    </td>
+                                    <th class="px-4 py-3 text-left font-semibold text-foreground">Product</th>
+                                    <th class="hidden px-4 py-3 text-right font-semibold text-foreground sm:table-cell">Price</th>
+                                    <th class="px-4 py-3 text-left font-semibold text-foreground">Qty</th>
+                                    <th class="px-4 py-3 text-right font-semibold text-foreground">Subtotal</th>
+                                    <th class="px-4 py-3"></th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody class="divide-y divide-border">
+                                @foreach ($cartItems as $item)
+                                    <tr>
+                                        <td class="px-4 py-4">
+                                            <span class="font-medium text-foreground">{{ $item->product->product_name }}</span>
+                                            <p class="text-xs text-muted-foreground">{{ $item->product->category->category_name ?? '' }}</p>
+                                        </td>
+                                        <td class="hidden px-4 py-4 text-right text-muted-foreground sm:table-cell">₱{{ number_format($item->product->price, 2) }}</td>
+                                        <td class="px-4 py-4">
+                                            <form action="{{ route('cart.update', $item->cart_id) }}" method="POST" class="flex flex-wrap items-center gap-2">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" class="w-16 rounded-lg border border-input bg-background px-2 py-1.5 text-sm" />
+                                                <button type="submit" class="rounded-lg border border-border px-2 py-1 text-xs hover:bg-secondary">Update</button>
+                                            </form>
+                                        </td>
+                                        <td class="px-4 py-4 text-right font-medium">₱{{ number_format($item->product->price * $item->quantity, 2) }}</td>
+                                        <td class="px-4 py-4">
+                                            <form action="{{ route('cart.remove', $item->cart_id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-sm text-destructive hover:underline">Remove</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                    <div class="rounded-xl border border-border bg-card p-6 shadow-sm">
+                        <h2 class="font-serif text-lg font-semibold">Order summary</h2>
+                        <div class="mt-4 space-y-2 text-sm">
+                            <div class="flex justify-between text-muted-foreground"><span>Subtotal</span><span>₱{{ number_format($subtotal, 2) }}</span></div>
+                            <div class="flex justify-between text-muted-foreground"><span>VAT (12%)</span><span>₱{{ number_format($vat, 2) }}</span></div>
+                            <div class="border-t border-border pt-3 text-base font-semibold text-foreground">
+                                <div class="flex justify-between"><span>Total</span><span>₱{{ number_format($total, 2) }}</span></div>
+                            </div>
+                        </div>
+                        <a href="{{ route('orders.checkout') }}" class="mt-6 block w-full rounded-lg bg-primary py-3 text-center text-sm font-medium text-primary-foreground hover:bg-primary/90">Proceed to checkout</a>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Order Summary</h5>
-                    <hr>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Subtotal:</span>
-                        <span>₱{{ number_format($cartItems->sum(fn($item) => $item->product->price * $item->quantity), 2) }}</span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>VAT (12%):</span>
-                        <span>₱{{ number_format($cartItems->sum(fn($item) => $item->product->price * $item->quantity) * 0.12, 2) }}</span>
-                    </div>
-                    <hr>
-                    <div class="d-flex justify-content-between mb-3">
-                        <strong>Total:</strong>
-                        <strong>₱{{ number_format($cartItems->sum(fn($item) => $item->product->price * $item->quantity) * 1.12, 2) }}</strong>
-                    </div>
-                    <a href="{{ route('orders.checkout') }}" class="btn btn-primary w-100" style="background-color: #B57EDC; border-color: #B57EDC;">
-                        Proceed to Checkout
-                    </a>
-                </div>
-            </div>
-        </div>
+        @endif
     </div>
-@endif
 @endsection

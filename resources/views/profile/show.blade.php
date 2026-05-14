@@ -1,43 +1,34 @@
-@extends('layouts.app')
+@extends('layouts.storefront')
 
 @section('title', 'My Profile - Lavender Pharmacy')
 
 @section('content')
-<div class="row mb-4">
-    <div class="col-md-12">
-        <h1 style="color: #5D3A66;"><i class="fas fa-user"></i> My Profile</h1>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-6">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <div class="mb-3">
-                    <label class="form-label text-muted">Name</label>
-                    <p class="h5">{{ $user->name }}</p>
+    <div class="mx-auto max-w-2xl px-4 pb-16 pt-24 sm:px-6 lg:px-8">
+        <h1 class="font-serif text-3xl font-bold text-foreground">Profile</h1>
+        <div class="mt-8 rounded-xl border border-border bg-card p-8 shadow-sm">
+            <dl class="space-y-6 text-sm">
+                <div>
+                    <dt class="text-muted-foreground">Name</dt>
+                    <dd class="mt-1 text-lg font-medium text-foreground">{{ $user->name }}</dd>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label text-muted">Email</label>
-                    <p class="h5">{{ $user->email }}</p>
+                <div>
+                    <dt class="text-muted-foreground">Email</dt>
+                    <dd class="mt-1 text-lg font-medium">{{ $user->email }}</dd>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label text-muted">Contact Number</label>
-                    <p class="h5">{{ $user->contact_number ?? 'Not provided' }}</p>
+                <div>
+                    <dt class="text-muted-foreground">Contact</dt>
+                    <dd class="mt-1">{{ $user->contact_number ?? 'Not provided' }}</dd>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label text-muted">Address</label>
-                    <p class="h5">{{ $user->address ?? 'Not provided' }}</p>
+                <div>
+                    <dt class="text-muted-foreground">Address</dt>
+                    <dd class="mt-1">{{ $user->address ?? 'Not provided' }}</dd>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label text-muted">Role</label>
-                    <p class="h5"><span class="badge bg-primary">{{ ucfirst($user->role) }}</span></p>
+                <div>
+                    <dt class="text-muted-foreground">Role</dt>
+                    <dd class="mt-1"><span class="inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">{{ ucfirst($user->role) }}</span></dd>
                 </div>
-                <a href="{{ route('profile.edit') }}" class="btn btn-primary" style="background-color: #B57EDC; border-color: #B57EDC;">
-                    <i class="fas fa-edit"></i> Edit Profile
-                </a>
-            </div>
+            </dl>
+            <a href="{{ route('profile.edit') }}" class="mt-8 inline-flex rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90">Edit profile</a>
         </div>
     </div>
-</div>
 @endsection
