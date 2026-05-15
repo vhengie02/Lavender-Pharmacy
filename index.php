@@ -1,20 +1,23 @@
 <?php
-require_once 'includes/init.php';
+/**
+ * Lavender Pharmacy - Main Entry Point
+ * All requests are routed through Laravel framework
+ */
 
-if (isLoggedIn()) {
-    // Redirect to appropriate dashboard based on role
-    if (hasRole(ROLE_ADMIN)) {
-        header('Location: ' . APP_URL . 'admin/dashboard.php');
-    } elseif (hasRole(ROLE_EDITOR)) {
-        header('Location: ' . APP_URL . 'editor/products.php');
-    } else {
-        header('Location: ' . APP_URL . 'customer/shop.php');
-    }
-    exit;
+define('LARAVEL_START', microtime(true));
+
+// Determine if the application is in maintenance mode
+if (file_exists($maintenance = __DIR__.'/storage/framework/maintenance.php')) {
+    require $maintenance;
 }
 
-$page_title = 'Home';
-?>
+// Register the Composer autoloader
+require __DIR__.'/vendor/autoload.php';
+
+// Bootstrap Laravel and handle the request
+$app = require_once __DIR__.'/bootstrap/app.php';
+
+$app->handleRequest(Illuminate\Http\Request::capture());
 <!DOCTYPE html>
 <html lang="en">
 <head>

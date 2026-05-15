@@ -1,5 +1,7 @@
 <?php
-require_once 'includes/init.php';
+// Redirect to Laravel login route
+header('Location: /login');
+exit;
 
 // If already logged in, redirect to appropriate page
 if (isLoggedIn()) {

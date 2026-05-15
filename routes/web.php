@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
@@ -12,6 +14,9 @@ use App\Http\Controllers\ReceiptController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/unauthorized', function () {
+    return response()->view('unauthorized', [], 403);
+})->name('unauthorized');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -53,6 +58,12 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::resource('products', AdminProductController::class, ['except' => ['show']]);
+        Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+        Route::get('/receipts', function () {
+            $receipts = \App\Models\Receipt::with('order.user')->latest()->paginate(15);
+            return view('admin.receipts', ['receipts' => $receipts]);
+        })->name('receipts.index');
     });
 
     Route::middleware('role:editor')->prefix('editor')->name('editor.')->group(function () {

@@ -1,5 +1,7 @@
 <?php
-require_once 'includes/init.php';
+// Redirect to unauthorized route
+header('Location: /unauthorized');
+exit;
 
 $page_title = 'Unauthorized Access';
 ?>

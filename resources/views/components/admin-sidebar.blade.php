@@ -13,9 +13,10 @@
     ];
 @endphp
 <aside class="fixed left-0 top-0 z-40 flex h-screen w-64 flex-col border-r border-border bg-card">
-    <div class="border-b border-border p-6">
-        <a href="{{ route('admin.dashboard') }}" class="inline-block">
-            <x-storefront-logo class="h-8 w-auto" />
+    <div class="flex h-16 items-center justify-between border-b border-border px-4">
+        <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
+            <x-storefront-logo class="h-8 w-8" />
+            <span class="font-serif text-lg font-semibold text-primary">Admin</span>
         </a>
     </div>
     <nav class="flex-1 space-y-1 overflow-y-auto p-4">

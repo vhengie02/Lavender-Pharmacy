@@ -1,5 +1,7 @@
 <?php
-require_once 'includes/init.php';
+// Redirect to Laravel profile route
+header('Location: /profile');
+exit;
 
 requireLogin();
 

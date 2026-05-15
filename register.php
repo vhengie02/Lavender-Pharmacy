@@ -1,5 +1,7 @@
 <?php
-require_once 'includes/init.php';
+// Redirect to Laravel register route
+header('Location: /register');
+exit;
 
 // If already logged in, redirect to appropriate page
 if (isLoggedIn()) {

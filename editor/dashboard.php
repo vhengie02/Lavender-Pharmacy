@@ -1,12 +1,15 @@
 <?php
 require_once dirname(__DIR__) . '/includes/init.php';
 
-requireRole(ROLE_ADMIN);
+requireRole(ROLE_EDITOR);
 
-$admin = new Admin($_SESSION['user_id']);
-$stats = $admin->getDashboardStats();
+$editor = new Editor($_SESSION['user_id']);
+$page_title = 'Editor Dashboard';
 
-$page_title = 'Admin Dashboard';
+// Get editor stats
+$db = Database::getInstance()->getConnection();
+$my_products = $db->query("SELECT COUNT(*) as count FROM products WHERE created_by = {$_SESSION['user_id']}")->fetch_assoc();
+$total_sales = $db->query("SELECT SUM(total_amount) as amount FROM orders WHERE status = 'completed'")->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +19,6 @@ $page_title = 'Admin Dashboard';
     <title><?php echo $page_title; ?> - <?php echo APP_NAME; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.css">
     <style>
         :root {
             --lavender: #B57EDC;
@@ -30,6 +32,7 @@ $page_title = 'Admin Dashboard';
         
         .navbar {
             background: linear-gradient(135deg, var(--lavender) 0%, var(--soft-purple) 100%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .stat-card {
@@ -38,6 +41,7 @@ $page_title = 'Admin Dashboard';
             background: white;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
+            border-radius: 10px;
         }
         
         .stat-card:hover {
@@ -54,6 +58,23 @@ $page_title = 'Admin Dashboard';
             font-size: 2rem;
             font-weight: bold;
             color: var(--dark-violet);
+        }
+        
+        .quick-action {
+            background: white;
+            border: 2px solid var(--lavender);
+            color: var(--lavender);
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .quick-action:hover {
+            background-color: var(--lavender);
+            color: white;
+            transform: translateY(-5px);
         }
     </style>
 </head>
@@ -73,13 +94,10 @@ $page_title = 'Admin Dashboard';
                         <a class="nav-link active" href="dashboard.php"><i class="fas fa-chart-line"></i> Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="products.php"><i class="fas fa-pills"></i> Products</a>
+                        <a class="nav-link" href="products.php"><i class="fas fa-pills"></i> My Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="users.php"><i class="fas fa-users"></i> Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="reports.php"><i class="fas fa-chart-bar"></i> Reports</a>
+                        <a class="nav-link" href="<?php echo APP_URL; ?>profile.php"><i class="fas fa-user"></i> Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo APP_URL; ?>logout.php"><i class="fas fa-sign-out-alt"></i></a>
@@ -92,7 +110,7 @@ $page_title = 'Admin Dashboard';
     <!-- Dashboard Content -->
     <div class="container-fluid my-4">
         <h2 class="mb-4" style="color: var(--dark-violet);">
-            <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+            <i class="fas fa-tachometer-alt"></i> Editor Dashboard
         </h2>
         
         <!-- Statistics Cards -->
@@ -102,22 +120,8 @@ $page_title = 'Admin Dashboard';
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h6 class="card-title text-muted mb-2">Total Users</h6>
-                                <div class="stat-number"><?php echo $stats['total_users']; ?></div>
-                            </div>
-                            <i class="fas fa-users stat-icon"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-3">
-                <div class="card stat-card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="card-title text-muted mb-2">Total Products</h6>
-                                <div class="stat-number"><?php echo $stats['total_products']; ?></div>
+                                <h6 class="card-title text-muted mb-2">My Products</h6>
+                                <div class="stat-number"><?php echo $my_products['count'] ?? 0; ?></div>
                             </div>
                             <i class="fas fa-pills stat-icon"></i>
                         </div>
@@ -130,10 +134,10 @@ $page_title = 'Admin Dashboard';
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h6 class="card-title text-muted mb-2">Total Orders</h6>
-                                <div class="stat-number"><?php echo $stats['total_orders']; ?></div>
+                                <h6 class="card-title text-muted mb-2">Published</h6>
+                                <div class="stat-number"><?php echo $my_products['count'] ?? 0; ?></div>
                             </div>
-                            <i class="fas fa-shopping-cart stat-icon"></i>
+                            <i class="fas fa-check-circle stat-icon"></i>
                         </div>
                     </div>
                 </div>
@@ -144,8 +148,22 @@ $page_title = 'Admin Dashboard';
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h6 class="card-title text-muted mb-2">Today's Sales</h6>
-                                <div class="stat-number"><?php echo formatCurrency($stats['today_sales']); ?></div>
+                                <h6 class="card-title text-muted mb-2">Total Views</h6>
+                                <div class="stat-number">0</div>
+                            </div>
+                            <i class="fas fa-eye stat-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="card stat-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title text-muted mb-2">Total Sales</h6>
+                                <div class="stat-number"><?php echo formatCurrency($total_sales['amount'] ?? 0); ?></div>
                             </div>
                             <i class="fas fa-money-bill stat-icon"></i>
                         </div>
@@ -154,63 +172,37 @@ $page_title = 'Admin Dashboard';
             </div>
         </div>
         
-        <!-- Additional Stats -->
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header" style="background-color: var(--lavender); color: white;">
-                        <h5 class="mb-0">Monthly Sales</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <p class="text-muted mb-2">This Month's Total</p>
-                                <h3 class="stat-number"><?php echo formatCurrency($stats['month_sales']); ?></h3>
-                            </div>
-                            <i class="fas fa-chart-area" style="font-size: 2.5rem; color: var(--soft-purple); opacity: 0.5;"></i>
-                        </div>
-                    </div>
-                </div>
+        <!-- Quick Actions -->
+        <div class="row g-4 mt-5">
+            <div class="col-md-12">
+                <h4 style="color: var(--dark-violet);">Quick Actions</h4>
             </div>
-            
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header" style="background-color: var(--lavender); color: white;">
-                        <h5 class="mb-0">Inventory Status</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <p class="text-muted mb-2">Low Stock Products</p>
-                                <h3 class="stat-number"><?php echo $stats['low_stock']; ?></h3>
-                            </div>
-                            <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; color: #ffc107; opacity: 0.5;"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-            <!-- Quick Links -->
-        <div class="row g-4 mt-4">
             <div class="col-md-3">
-                <a href="products.php" class="btn btn-outline-lavender w-100" style="border-color: var(--lavender); color: var(--lavender); padding: 15px;">
-                    <i class="fas fa-pills"></i> Manage Products
+                <a href="products.php" class="quick-action text-center">
+                    <i class="fas fa-pills" style="font-size: 2.5rem;"></i>
+                    <h5 class="mt-2">View My Products</h5>
+                    <p class="small">Manage your product catalog</p>
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="users.php" class="btn btn-outline-lavender w-100" style="border-color: var(--lavender); color: var(--lavender); padding: 15px;">
-                    <i class="fas fa-users"></i> Manage Users
+                <a href="products.php?action=add" class="quick-action text-center">
+                    <i class="fas fa-plus-circle" style="font-size: 2.5rem;"></i>
+                    <h5 class="mt-2">Add New Product</h5>
+                    <p class="small">Create a new product</p>
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="reports.php" class="btn btn-outline-lavender w-100" style="border-color: var(--lavender); color: var(--lavender); padding: 15px;">
-                    <i class="fas fa-chart-bar"></i> View Reports
+                <a href="<?php echo APP_URL; ?>profile.php" class="quick-action text-center">
+                    <i class="fas fa-user-cog" style="font-size: 2.5rem;"></i>
+                    <h5 class="mt-2">Edit Profile</h5>
+                    <p class="small">Update your information</p>
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="<?php echo APP_URL; ?>logout.php" class="btn btn-outline-danger w-100" style="padding: 15px;">
-                    <i class="fas fa-sign-out-alt"></i> Logout
+                <a href="<?php echo APP_URL; ?>logout.php" class="quick-action text-center" style="border-color: #dc3545; color: #dc3545;">
+                    <i class="fas fa-sign-out-alt" style="font-size: 2.5rem;"></i>
+                    <h5 class="mt-2">Logout</h5>
+                    <p class="small">Exit the system</p>
                 </a>
             </div>
         </div>
@@ -222,6 +214,5 @@ $page_title = 'Admin Dashboard';
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 </body>
 </html>
