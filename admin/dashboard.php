@@ -21,83 +21,152 @@ $page_title = 'Admin Dashboard';
         :root {
             --lavender: #B57EDC;
             --soft-purple: #C8A2C8;
+            --white: #FFFFFF;
+            --light-lilac: #E6E6FA;
             --dark-violet: #5D3A66;
         }
         
         body {
-            background-color: #f8f9fa;
+            background: #f8f9fa;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .navbar {
-            background: linear-gradient(135deg, var(--lavender) 0%, var(--soft-purple) 100%);
+            display: none;
+        }
+        
+        .dashboard-header {
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--lavender);
+            padding-bottom: 20px;
+        }
+        
+        .dashboard-header h2 {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--dark-violet);
+            margin-bottom: 5px;
+        }
+        
+        .dashboard-header p {
+            font-size: 0.95rem;
+            color: #666;
         }
         
         .stat-card {
-            border: none;
-            border-left: 4px solid var(--lavender);
             background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: none;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
+            height: 100%;
         }
         
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 12px rgba(181, 126, 220, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(181, 126, 220, 0.2);
+        }
+        
+        .stat-card .card-body {
+            padding: 0;
         }
         
         .stat-icon {
-            font-size: 2rem;
+            font-size: 2.2rem;
             color: var(--lavender);
         }
         
         .stat-number {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: var(--dark-violet);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(181, 126, 220, 0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--lavender) 0%, var(--soft-purple) 100%) !important;
+            color: white;
+            border: none;
+            border-radius: 8px 8px 0 0 !important;
+            padding: 15px 20px;
+        }
+        
+        .card-header h5 {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .quick-link-btn {
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            background: white;
+            color: var(--lavender);
+            border: 2px solid var(--lavender);
+        }
+        
+        .quick-link-btn:hover {
+            background: var(--lavender);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(181, 126, 220, 0.25);
+        }
+        
+        .quick-link-btn i {
+            margin-right: 6px;
+        }
+        
+        .logout-btn {
+            background: white;
+            color: #dc3545;
+            border: 2px solid #dc3545;
+        }
+        
+        .logout-btn:hover {
+            background: #dc3545;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.25);
+        }
+        
+        footer {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="<?php echo APP_URL; ?>">
-                <i class="fas fa-flower"></i> <?php echo APP_NAME; ?>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="dashboard.php"><i class="fas fa-chart-line"></i> Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="products.php"><i class="fas fa-pills"></i> Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="users.php"><i class="fas fa-users"></i> Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="reports.php"><i class="fas fa-chart-bar"></i> Reports</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?php echo APP_URL; ?>logout.php"><i class="fas fa-sign-out-alt"></i></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    
     <!-- Dashboard Content -->
-    <div class="container-fluid my-4">
-        <h2 class="mb-4" style="color: var(--dark-violet);">
-            <i class="fas fa-tachometer-alt"></i> Admin Dashboard
-        </h2>
+    <div class="container-fluid p-4">
+        <div class="dashboard-header mb-4">
+            <h2>
+                <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+            </h2>
+            <p class="text-muted">Here's your system overview</p>
+        </div>
         
         <!-- Statistics Cards -->
-        <div class="row g-4 mb-4">
-            <div class="col-md-3">
+        <div class="row g-3 mb-4">
+            <div class="col-lg-3 col-md-6">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
@@ -111,7 +180,7 @@ $page_title = 'Admin Dashboard';
                 </div>
             </div>
             
-            <div class="col-md-3">
+            <div class="col-lg-3 col-md-6">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
@@ -125,7 +194,7 @@ $page_title = 'Admin Dashboard';
                 </div>
             </div>
             
-            <div class="col-md-3">
+            <div class="col-lg-3 col-md-6">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
@@ -139,7 +208,7 @@ $page_title = 'Admin Dashboard';
                 </div>
             </div>
             
-            <div class="col-md-3">
+            <div class="col-lg-3 col-md-6">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
@@ -155,10 +224,10 @@ $page_title = 'Admin Dashboard';
         </div>
         
         <!-- Additional Stats -->
-        <div class="row g-4">
-            <div class="col-md-6">
+        <div class="row g-3 mb-4">
+            <div class="col-lg-6">
                 <div class="card">
-                    <div class="card-header" style="background-color: var(--lavender); color: white;">
+                    <div class="card-header">
                         <h5 class="mb-0">Monthly Sales</h5>
                     </div>
                     <div class="card-body">
@@ -167,15 +236,15 @@ $page_title = 'Admin Dashboard';
                                 <p class="text-muted mb-2">This Month's Total</p>
                                 <h3 class="stat-number"><?php echo formatCurrency($stats['month_sales']); ?></h3>
                             </div>
-                            <i class="fas fa-chart-area" style="font-size: 2.5rem; color: var(--soft-purple); opacity: 0.5;"></i>
+                            <i class="fas fa-chart-area" style="font-size: 2.2rem; color: var(--soft-purple); opacity: 0.5;"></i>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <div class="card">
-                    <div class="card-header" style="background-color: var(--lavender); color: white;">
+                    <div class="card-header">
                         <h5 class="mb-0">Inventory Status</h5>
                     </div>
                     <div class="card-body">
@@ -184,32 +253,32 @@ $page_title = 'Admin Dashboard';
                                 <p class="text-muted mb-2">Low Stock Products</p>
                                 <h3 class="stat-number"><?php echo $stats['low_stock']; ?></h3>
                             </div>
-                            <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; color: #ffc107; opacity: 0.5;"></i>
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2.2rem; color: #ffc107; opacity: 0.5;"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         
-            <!-- Quick Links -->
-        <div class="row g-4 mt-4">
-            <div class="col-md-3">
-                <a href="products.php" class="btn btn-outline-lavender w-100" style="border-color: var(--lavender); color: var(--lavender); padding: 15px;">
+        <!-- Quick Links -->
+        <div class="row g-3 mt-2">
+            <div class="col-lg-3 col-md-6">
+                <a href="products.php" class="btn quick-link-btn w-100">
                     <i class="fas fa-pills"></i> Manage Products
                 </a>
             </div>
-            <div class="col-md-3">
-                <a href="users.php" class="btn btn-outline-lavender w-100" style="border-color: var(--lavender); color: var(--lavender); padding: 15px;">
+            <div class="col-lg-3 col-md-6">
+                <a href="users.php" class="btn quick-link-btn w-100">
                     <i class="fas fa-users"></i> Manage Users
                 </a>
             </div>
-            <div class="col-md-3">
-                <a href="reports.php" class="btn btn-outline-lavender w-100" style="border-color: var(--lavender); color: var(--lavender); padding: 15px;">
+            <div class="col-lg-3 col-md-6">
+                <a href="reports.php" class="btn quick-link-btn w-100">
                     <i class="fas fa-chart-bar"></i> View Reports
                 </a>
             </div>
-            <div class="col-md-3">
-                <a href="<?php echo APP_URL; ?>logout.php" class="btn btn-outline-danger w-100" style="padding: 15px;">
+            <div class="col-lg-3 col-md-6">
+                <a href="<?php echo APP_URL; ?>logout.php" class="btn quick-link-btn logout-btn w-100">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>

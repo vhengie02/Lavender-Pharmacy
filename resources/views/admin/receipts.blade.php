@@ -33,13 +33,13 @@
                         <td>{{ $receipt->invoice_number }}</td>
                         <td>#{{ $receipt->order_id }}</td>
                         <td>{{ $receipt->order->user->name ?? 'N/A' }}</td>
-                        <td>₱{{ number_format($receipt->total_with_tax, 2) }}</td>
-                        <td>{{ $receipt->created_at->format('M d, Y') }}</td>
+                        <td>₱{{ number_format($receipt->order->total_amount, 2) }}</td>
+                        <td>{{ $receipt->date_created->format('M d, Y') }}</td>
                         <td>
-                            <a href="{{ route('receipts.show', $receipt->id) }}" class="btn btn-sm btn-info">
+                            <a href="{{ route('receipts.show', $receipt->receipt_id) }}" class="btn btn-sm btn-info">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="{{ route('receipts.download', $receipt->id) }}" class="btn btn-sm btn-success">
+                            <a href="{{ route('receipts.download', $receipt->receipt_id) }}" class="btn btn-sm btn-success">
                                 <i class="fas fa-download"></i>
                             </a>
                         </td>

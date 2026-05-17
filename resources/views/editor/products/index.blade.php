@@ -74,7 +74,7 @@
                         <td>{{ $product->category->category_name ?? 'N/A' }}</td>
                         <td>₱{{ number_format($product->price, 2) }}</td>
                         <td>
-                            <span class="badge" style="background-color: @if($product->stock_quantity < 10) #dc3545 @else #28a745 @endif">
+                            <span class="badge {{ $product->stock_quantity < 10 ? 'bg-danger' : 'bg-success' }}">
                                 {{ $product->stock_quantity }} units
                             </span>
                         </td>

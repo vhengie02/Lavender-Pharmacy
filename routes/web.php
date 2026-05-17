@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EditorController;
+use App\Http\Controllers\EditorUiController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -58,10 +59,12 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::resource('products', AdminProductController::class, ['except' => ['show']]);
+        Route::resource('products', AdminProductController::class);
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+        Route::put('/orders/{order}', [AdminOrderController::class, 'update'])->name('orders.update');
         Route::get('/receipts', function () {
-            $receipts = \App\Models\Receipt::with('order.user')->latest()->paginate(15);
+            $receipts = \App\Models\Receipt::with('order.user')->orderBy('date_created', 'desc')->paginate(15);
             return view('admin.receipts', ['receipts' => $receipts]);
         })->name('receipts.index');
     });
@@ -69,6 +72,10 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:editor')->prefix('editor')->name('editor.')->group(function () {
         Route::get('/dashboard', [EditorController::class, 'dashboard'])->name('dashboard');
         Route::resource('products', EditorController::class, ['except' => ['show']]);
+        Route::get('/pos', [EditorUiController::class, 'pos'])->name('pos');
+        Route::get('/receipts', [EditorUiController::class, 'receipts'])->name('receipts');
+        Route::get('/reports', [EditorUiController::class, 'reports'])->name('reports');
+        Route::get('/settings', [EditorUiController::class, 'settings'])->name('settings');
     });
 });
 

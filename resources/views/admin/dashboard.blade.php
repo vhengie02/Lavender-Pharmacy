@@ -93,7 +93,7 @@
                                 <td><strong>₱{{ number_format($order->total_amount, 2) }}</strong></td>
                                 <td>{{ ucfirst($order->payment_method) }}</td>
                                 <td>
-                                    <span class="badge" style="background-color: @if($order->order_status === 'completed') #28a745 @elseif($order->order_status === 'pending') #ffc107 @else #dc3545 @endif">
+                                    <span class="badge {{ $order->order_status === 'completed' ? 'bg-success' : ($order->order_status === 'pending' ? 'bg-warning text-dark' : 'bg-danger') }}">
                                         {{ ucfirst($order->order_status) }}
                                     </span>
                                 </td>
