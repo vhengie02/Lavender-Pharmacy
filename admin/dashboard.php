@@ -27,9 +27,15 @@ $page_title = 'Admin Dashboard';
         }
         
         body {
-            background: #f8f9fa;
+            background: #ffffff;
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .container-fluid {
+            background: #f5f5f5;
+            margin-left: 130px;
+            padding: 20px 30px !important;
         }
         
         .navbar {
@@ -37,21 +43,26 @@ $page_title = 'Admin Dashboard';
         }
         
         .dashboard-header {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             border-bottom: 3px solid var(--lavender);
-            padding-bottom: 20px;
+            padding-bottom: 15px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 0 0 25px 0;
         }
         
         .dashboard-header h2 {
-            font-size: 2.2rem;
-            font-weight: bold;
+            font-size: 2rem;
+            font-weight: 700;
             color: var(--dark-violet);
             margin-bottom: 5px;
         }
         
         .dashboard-header p {
             font-size: 0.95rem;
-            color: #666;
+            color: #888;
+            margin: 0;
         }
         
         .stat-card {
@@ -59,18 +70,27 @@ $page_title = 'Admin Dashboard';
             border: none;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
             transition: all 0.3s ease;
             height: 100%;
+            border-left: 4px solid var(--lavender);
         }
         
         .stat-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(181, 126, 220, 0.2);
+            box-shadow: 0 8px 16px rgba(181, 126, 220, 0.25);
+            border-left-color: var(--dark-violet);
         }
         
         .stat-card .card-body {
             padding: 0;
+        }
+        
+        .stat-card .card-title {
+            font-size: 0.85rem !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .stat-icon {
@@ -79,8 +99,8 @@ $page_title = 'Admin Dashboard';
         }
         
         .stat-number {
-            font-size: 1.8rem;
-            font-weight: bold;
+            font-size: 2rem;
+            font-weight: 700;
             color: var(--dark-violet);
         }
         
@@ -88,12 +108,12 @@ $page_title = 'Admin Dashboard';
             border: none;
             border-radius: 8px;
             background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
             transition: all 0.3s ease;
         }
         
         .card:hover {
-            box-shadow: 0 4px 12px rgba(181, 126, 220, 0.15);
+            box-shadow: 0 6px 16px rgba(181, 126, 220, 0.2);
         }
         
         .card-header {
@@ -102,11 +122,13 @@ $page_title = 'Admin Dashboard';
             border: none;
             border-radius: 8px 8px 0 0 !important;
             padding: 15px 20px;
+            font-weight: 600;
         }
         
         .card-header h5 {
-            font-weight: 600;
-            font-size: 1rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin: 0;
         }
         
         .card-body {
@@ -114,39 +136,42 @@ $page_title = 'Admin Dashboard';
         }
         
         .quick-link-btn {
-            border: none;
-            padding: 12px;
+            border: 2px solid var(--lavender);
+            padding: 12px 16px;
             border-radius: 6px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.9rem;
             transition: all 0.3s ease;
             background: white;
             color: var(--lavender);
-            border: 2px solid var(--lavender);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .quick-link-btn:hover {
             background: var(--lavender);
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(181, 126, 220, 0.25);
+            box-shadow: 0 6px 12px rgba(181, 126, 220, 0.3);
+            text-decoration: none;
         }
         
         .quick-link-btn i {
-            margin-right: 6px;
+            margin-right: 8px;
         }
         
         .logout-btn {
-            background: white;
+            border-color: #dc3545;
             color: #dc3545;
-            border: 2px solid #dc3545;
         }
         
         .logout-btn:hover {
             background: #dc3545;
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.25);
+            box-shadow: 0 6px 12px rgba(220, 53, 69, 0.3);
         }
         
         footer {
