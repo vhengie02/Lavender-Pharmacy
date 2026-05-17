@@ -86,14 +86,6 @@
     .metric-card h3 { font-size: 2.2rem; font-weight: 800; margin-bottom: 4px; color: var(--metric-color); line-height: 1; }
     .metric-card small { color: #B0A0BC; font-size: 0.78rem; }
 
-    .alert-custom {
-        border: none; border-radius: 10px;
-        border-left: 4px solid #f59e0b;
-        background: #fffbeb;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        color: #78350f;
-    }
-
     .card-modern {
         background: white; border: none; border-radius: 14px;
         box-shadow: 0 2px 12px rgba(93, 58, 102, 0.07);
@@ -212,21 +204,7 @@
             </div>
         </div>
 
-        @if($lowStockProducts > 0)
-        <div class="row mb-4">
-            <div class="col-md-12">
-                <div class="alert alert-custom alert-dismissible fade show d-flex align-items-center gap-2" role="alert">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <div>
-                        <strong>Low Stock Alert!</strong>
-                        You have <strong>{{ $lowStockProducts }}</strong> product(s) with fewer than 10 units remaining.
-                        <a href="{{ route('editor.products.index', ['stock' => 'low']) }}" class="alert-link ms-1">View details →</a>
-                    </div>
-                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
-                </div>
-            </div>
-        </div>
-        @endif
+        <x-low-stock-alert :count="$lowStockProducts" />
 
         <div class="row">
             <div class="col-md-12">

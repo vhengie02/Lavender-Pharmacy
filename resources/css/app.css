@@ -87,3 +87,45 @@
         display: inline-block;
     }
 }
+
+/* Unlayered so these beat Bootstrap (editor layout) link/body defaults */
+[data-low-stock-alert] {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.625;
+    color: #78350f;
+    -webkit-font-smoothing: antialiased;
+}
+
+[data-low-stock-alert] strong {
+    font-weight: 600;
+    color: #78350f;
+}
+
+[data-low-stock-alert] .low-stock-alert__link {
+    color: #78350f;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 600;
+    line-height: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-color: #78350f;
+}
+
+[data-low-stock-alert] .low-stock-alert__link:hover,
+[data-low-stock-alert] .low-stock-alert__link:focus-visible {
+    color: #451a03;
+    text-decoration-color: #451a03;
+}
+
+[data-low-stock-alert] .low-stock-alert__dismiss {
+    color: rgb(146 64 14 / 0.7);
+    font-family: inherit;
+    line-height: 1;
+}
+
+[data-low-stock-alert] .low-stock-alert__dismiss:hover {
+    color: #451a03;
+    background-color: #fef3c7;
+}

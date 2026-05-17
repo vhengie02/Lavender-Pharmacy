@@ -17,9 +17,9 @@
 
     <div class="mb-6 rounded-xl border border-border bg-card p-6 shadow-sm">
         <h2 class="mb-4 font-semibold">Update status</h2>
-        <form action="{{ route('admin.orders.update-status', $order) }}" method="POST" class="flex flex-wrap items-end gap-3">
+        <form action="{{ route('admin.orders.update', $order) }}" method="POST" class="flex flex-wrap items-end gap-3">
             @csrf
-            @method('PATCH')
+            @method('PUT')
             <div>
                 <label for="order_status" class="mb-1 block text-xs font-medium text-muted-foreground">Status</label>
                 <select name="order_status" id="order_status" class="rounded-lg border border-input bg-background px-3 py-2 text-sm">

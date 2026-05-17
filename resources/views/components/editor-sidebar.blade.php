@@ -342,10 +342,6 @@
                 <i class="fas fa-user-circle"></i>
                 <span>My Profile</span>
             </a>
-            <a href="{{ route('editor.settings') }}" class="quick-action-btn" style="grid-column: span 2;">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-            </a>
         </div>
     </div>
 

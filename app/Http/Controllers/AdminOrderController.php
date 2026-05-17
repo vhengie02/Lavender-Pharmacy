@@ -52,7 +52,7 @@ class AdminOrderController extends Controller
     /**
      * Update order status
      */
-    public function updateStatus(Request $request, Order $order)
+    public function update(Request $request, Order $order)
     {
         $validated = $request->validate([
             'order_status' => 'required|in:pending,completed,cancelled',
@@ -61,14 +61,5 @@ class AdminOrderController extends Controller
         $order->update($validated);
 
         return redirect()->route('admin.orders.show', $order)->with('success', 'Order status updated');
-    }
-
-    /**
-     * Delete an order (soft delete would be better in production)
-     */
-    public function destroy(Order $order)
-    {
-        $order->delete();
-        return redirect()->route('admin.orders.index')->with('success', 'Order deleted');
     }
 }

@@ -1,7 +1,7 @@
 @php
     $navMain = [
         ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'active' => ['admin.dashboard'], 'icon' => 'fa-chart-line'],
-        ['label' => 'Products', 'route' => 'admin.products.index', 'active' => ['admin.products.*', 'admin.products.categories'], 'icon' => 'fa-pills'],
+        ['label' => 'Products', 'route' => 'admin.products.index', 'active' => ['admin.products.*'], 'icon' => 'fa-pills'],
         ['label' => 'Orders', 'route' => 'admin.orders.index', 'active' => ['admin.orders.*'], 'icon' => 'fa-shopping-bag'],
     ];
     $navReports = [
@@ -369,10 +369,6 @@
             <a href="{{ route('profile.show') }}" class="quick-action-btn">
                 <i class="fas fa-user-circle"></i>
                 <span>My Profile</span>
-            </a>
-            <a href="#" class="quick-action-btn" style="grid-column: span 2;">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
             </a>
         </div>
     </div>

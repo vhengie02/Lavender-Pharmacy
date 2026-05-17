@@ -114,13 +114,4 @@ class AdminProductController extends Controller
 
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully');
     }
-
-    /**
-     * Show categories management
-     */
-    public function categories()
-    {
-        $categories = Category::withCount('products')->paginate(15);
-        return view('admin.products.categories', ['categories' => $categories]);
-    }
 }
