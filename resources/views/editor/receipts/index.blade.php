@@ -3,10 +3,11 @@
 @section('title', 'Receipts - Editor')
 
 @section('content')
-    <div class="mb-8">
-        <h1 class="font-serif text-3xl font-bold text-foreground">Receipts</h1>
-        <p class="mt-1 text-muted-foreground">Orders with generated receipts.</p>
-    </div>
+<div style="width:100%; min-height:100vh; background:#F7F3FC; padding:32px 40px; max-width:1400px; margin:0 auto;">
+    <header class="mb-8 border-b border-border pb-4">
+        <h1 class="font-serif text-2xl font-bold text-foreground">Receipts</h1>
+        <p class="mt-1 text-sm text-muted-foreground">Orders with generated receipts.</p>
+    </header>
     <div class="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-border text-sm">
@@ -34,4 +35,5 @@
         </div>
         <div class="border-t border-border px-4 py-3">{{ $receipts->links() }}</div>
     </div>
+{!! '</'.'div>' !!}
 @endsection

@@ -1,6 +1,6 @@
-@extends('layouts.editor')
+@extends('layouts.admin')
 
-@section('title', 'Reports - Editor')
+@section('title', 'Reports - Admin')
 
 @section('content')
 <div style="width:100%; min-height:100vh; background:#F7F3FC; padding:32px 40px; max-width:1400px; margin:0 auto;">

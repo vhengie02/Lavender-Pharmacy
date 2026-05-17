@@ -1,204 +1,349 @@
-<?php
-require_once dirname(__DIR__) . '/includes/init.php';
+@extends('layouts.editor')
 
-requireRole(ROLE_EDITOR);
+@section('title', 'Products - Lavender Pharmacy')
 
-$editor = new Editor($_SESSION['user_id']);
-$page_title = 'My Products';
+@section('content')
+<style>
+    .dashboard-main { width: 100%; min-height: 100vh; background: #F7F3FC; }
+    .dashboard-container { padding: 32px 40px; max-width: 1400px; margin: 0 auto; }
+    @media (max-width: 768px) { .dashboard-container { padding: 24px 16px; } }
 
-// Get editor's products
-$db = Database::getInstance()->getConnection();
-$result = $db->query("SELECT * FROM products WHERE created_by = {$_SESSION['user_id']} ORDER BY product_name ASC");
-$products = $result->fetch_all(MYSQLI_ASSOC);
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $page_title; ?> - <?php echo APP_NAME; ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.min.css">
-    <style>
-        :root {
-            --lavender: #B57EDC;
-            --soft-purple: #C8A2C8;
-            --dark-violet: #5D3A66;
-        }
-        
-        body {
-            background-color: #f8f9fa;
-        }
-        
-        .navbar {
-            background: linear-gradient(135deg, var(--lavender) 0%, var(--soft-purple) 100%);
-        }
-        
-        .product-card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(181, 126, 220, 0.3);
-        }
-        
-        .product-image {
-            height: 200px;
-            background: linear-gradient(135deg, #E6E6FA 0%, #C8A2C8 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: white;
-            border-radius: 10px 10px 0 0;
-        }
-        
-        .btn-primary-lavender {
-            background-color: var(--lavender);
-            border: none;
-            color: white;
-        }
-        
-        .btn-primary-lavender:hover {
-            background-color: var(--dark-violet);
-            color: white;
-        }
-        
-        .btn-add-product {
-            background: white;
-            border: 2px solid var(--lavender);
-            color: var(--lavender);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 250px;
-        }
-        
-        .btn-add-product:hover {
-            background-color: var(--lavender);
-            color: white;
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(181, 126, 220, 0.3);
-        }
-        
-        .btn-add-product i {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="<?php echo APP_URL; ?>">
-                <i class="fas fa-flower"></i> <?php echo APP_NAME; ?>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard.php"><i class="fas fa-chart-line"></i> Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="products.php"><i class="fas fa-pills"></i> My Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?php echo APP_URL; ?>profile.php"><i class="fas fa-user"></i> Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?php echo APP_URL; ?>logout.php"><i class="fas fa-sign-out-alt"></i></a>
-                    </li>
-                </ul>
+    /* ── Header ── */
+    .dashboard-header {
+        margin-bottom: 28px;
+        background: linear-gradient(135deg, #5D3A66 0%, #8B4DAB 60%, #B57EDC 100%);
+        padding: 28px 32px;
+        border-radius: 14px;
+        box-shadow: 0 4px 20px rgba(93, 58, 102, 0.25);
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    .dashboard-header::before {
+        content: '';
+        position: absolute;
+        top: -40px; right: -40px;
+        width: 180px; height: 180px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.06);
+        pointer-events: none;
+    }
+    .dashboard-header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+    .dashboard-header h1 { font-size: 1.9rem; font-weight: 700; margin-bottom: 6px; color: white; }
+    .dashboard-header p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
+    .dashboard-header i.header-icon { margin-right: 10px; opacity: 0.85; }
+
+    .btn-add-header {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: rgba(255,255,255,0.18);
+        border: 1.5px solid rgba(255,255,255,0.4);
+        color: white;
+        border-radius: 9px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .btn-add-header:hover {
+        background: rgba(255,255,255,0.28);
+        color: white;
+        text-decoration: none;
+        transform: translateY(-1px);
+    }
+
+    /* ── Card shell ── */
+    .card-modern {
+        background: white;
+        border: none;
+        border-radius: 14px;
+        box-shadow: 0 2px 12px rgba(93, 58, 102, 0.07);
+        overflow: hidden;
+    }
+    .card-modern-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 24px;
+        border-bottom: 1px solid #F0E8FA;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .card-modern-header-left { display: flex; align-items: center; gap: 12px; }
+    .card-modern-header-icon {
+        width: 36px; height: 36px;
+        background: linear-gradient(135deg, #8B4DAB, #C8A2C8);
+        border-radius: 9px;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+    }
+    .card-modern-header-icon i { color: white; font-size: 0.9rem; }
+    .card-modern-header h5 { font-size: 1rem; font-weight: 700; color: #3D2549; margin: 0; }
+
+    .count-badge {
+        background: #F0E8FA;
+        color: #7A4F85;
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 3px 9px;
+        border-radius: 20px;
+    }
+
+    /* ── Search ── */
+    .search-wrap { padding: 16px 24px; border-bottom: 1px solid #F0E8FA; }
+    .search-inner {
+        display: flex;
+        gap: 8px;
+        background: #F7F3FC;
+        border: 1.5px solid #E0C8F5;
+        border-radius: 10px;
+        padding: 6px 12px;
+        align-items: center;
+        max-width: 420px;
+    }
+    .search-inner i { color: #B57EDC; font-size: 0.85rem; flex-shrink: 0; }
+    .search-inner input {
+        flex: 1; border: none; background: transparent;
+        outline: none; font-size: 0.875rem; color: #3D2549;
+    }
+    .search-inner input::placeholder { color: #C0A8D8; }
+
+    /* ── Products table ── */
+    .orders-table { width: 100%; border-collapse: collapse; }
+    .orders-table thead tr { background: #FDFAFF; }
+    .orders-table th {
+        padding: 11px 20px;
+        font-size: 0.72rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.8px;
+        color: #9B7BAB; border-bottom: 1px solid #F0E8FA; white-space: nowrap;
+    }
+    .orders-table td {
+        padding: 14px 20px;
+        font-size: 0.875rem; color: #4A3655;
+        border-bottom: 1px solid #F8F3FC; vertical-align: middle;
+    }
+    .orders-table tbody tr:last-child td { border-bottom: none; }
+    .orders-table tbody tr { transition: background 0.15s ease; }
+    .orders-table tbody tr:hover td { background: #FBF7FF; }
+
+    /* Product name cell */
+    .product-cell { display: flex; align-items: center; gap: 12px; }
+    .product-icon-wrap {
+        width: 38px; height: 38px;
+        border-radius: 9px;
+        background: linear-gradient(135deg, #F5EEFF, #EDE0FA);
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+    }
+    .product-icon-wrap i { color: #B57EDC; font-size: 0.95rem; }
+    .product-name-main { font-weight: 700; color: #3D2549; font-size: 0.875rem; line-height: 1.3; }
+    .product-name-generic { font-size: 0.75rem; color: #A08AB0; line-height: 1.3; }
+
+    /* Stock badge */
+    .stock-badge {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 5px 11px; border-radius: 20px;
+        font-size: 0.75rem; font-weight: 700; white-space: nowrap;
+    }
+    .stock-badge.low { background: #FEF2F2; color: #DC2626; }
+    .stock-badge.ok  { background: #ECFDF5; color: #059669; }
+
+    /* Price */
+    .price-cell { font-weight: 700; color: #5D3A66; }
+
+    /* Category chip */
+    .category-chip {
+        display: inline-flex; align-items: center; gap: 5px;
+        font-size: 0.78rem; color: #7A5285;
+        background: #F9F4FF; padding: 3px 9px;
+        border-radius: 6px; border: 1px solid #EAD8F5; font-weight: 500;
+    }
+
+    /* Action buttons */
+    .btn-action-sm {
+        width: 32px; height: 32px; border-radius: 8px;
+        display: inline-flex; align-items: center; justify-content: center;
+        font-size: 0.8rem; transition: all 0.2s ease; text-decoration: none;
+        cursor: pointer; border: 1.5px solid;
+    }
+    .btn-edit {
+        border-color: #DFC8F5; background: white; color: #8B4DAB;
+    }
+    .btn-edit:hover { background: #8B4DAB; color: white; border-color: #8B4DAB; box-shadow: 0 3px 8px rgba(139,77,171,0.3); }
+
+    /* Empty state */
+    .empty-state { padding: 56px 24px; text-align: center; color: #B0A0BC; }
+    .empty-state i { font-size: 2.8rem; margin-bottom: 14px; opacity: 0.3; display: block; }
+    .empty-state p { font-size: 0.9rem; margin-bottom: 4px; }
+    .empty-state small { font-size: 0.78rem; opacity: 0.7; }
+
+    .btn-add-empty {
+        display: inline-flex; align-items: center; gap: 8px;
+        margin-top: 16px; padding: 10px 22px;
+        background: linear-gradient(135deg, #8B4DAB, #B57EDC);
+        color: white; border-radius: 9px; font-size: 0.88rem; font-weight: 700;
+        text-decoration: none; transition: all 0.2s ease;
+        box-shadow: 0 3px 10px rgba(139,77,171,0.3);
+    }
+    .btn-add-empty:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(139,77,171,0.4); color: white; text-decoration: none; }
+
+    /* Footer */
+    .card-modern-footer {
+        padding: 14px 24px; border-top: 1px solid #F0E8FA;
+        background: #FDFAFF; display: flex; justify-content: space-between;
+        align-items: center; flex-wrap: wrap; gap: 10px;
+    }
+    .footer-info { font-size: 0.78rem; color: #A08AB0; }
+
+    .btn-view-all {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 7px 16px; border-radius: 8px;
+        border: 1.5px solid #C8A2C8; background: white; color: #7A4F85;
+        font-size: 0.82rem; font-weight: 600; text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    .btn-view-all:hover { background: #8B4DAB; color: white; border-color: #8B4DAB; text-decoration: none; }
+</style>
+
+<div class="dashboard-main">
+    <div class="dashboard-container">
+
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="dashboard-header-inner">
+                <div>
+                    <h1><i class="fas fa-pills header-icon"></i>Products</h1>
+                    <p>Manage your pharmacy inventory</p>
+                </div>
+                <a href="{{ route('editor.products.create') }}" class="btn-add-header">
+                    <i class="fas fa-plus"></i> Add Product
+                </a>
             </div>
         </div>
-    </nav>
-    
-    <!-- Main Content -->
-    <div class="container my-4">
-        <h2 class="mb-4" style="color: var(--dark-violet);">
-            <i class="fas fa-pills"></i> My Products
-        </h2>
-        
-        <?php if (empty($products)): ?>
-            <div class="row">
-                <div class="col-md-3">
-                    <a href="products.php?action=add" class="btn-add-product">
-                        <i class="fas fa-plus-circle"></i>
-                        <h5>Add Your First Product</h5>
-                        <p class="small text-muted">Create and manage products</p>
-                    </a>
-                </div>
-            </div>
-        <?php else: ?>
-            <div class="row g-4">
-                <div class="col-md-3">
-                    <a href="products.php?action=add" class="btn-add-product">
-                        <i class="fas fa-plus-circle"></i>
-                        <h5>Add New Product</h5>
-                    </a>
-                </div>
-                
-                <?php foreach ($products as $product): ?>
-                    <div class="col-md-3">
-                        <div class="card product-card h-100">
-                            <div class="product-image">
-                                <i class="fas fa-pill"></i>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo htmlspecialchars($product['product_name']); ?></h5>
-                                <p class="card-text text-muted small">
-                                    <?php echo htmlspecialchars($product['generic_name'] ?? 'N/A'); ?>
-                                </p>
-                                <div class="my-2">
-                                    <span class="badge bg-success">Stock: <?php echo $product['stock_quantity']; ?></span>
-                                </div>
-                                <h4 style="color: var(--lavender);">
-                                    <?php echo formatCurrency($product['price']); ?>
-                                </h4>
-                                <p class="card-text small"><?php echo htmlspecialchars(substr($product['description'] ?? '', 0, 60)); ?>...</p>
-                            </div>
-                            <div class="card-footer bg-transparent border-top">
-                                <button class="btn btn-primary-lavender btn-sm w-100" title="Edit" onclick="editProduct(<?php echo $product['product_id']; ?>)">
-                                    <i class="fas fa-edit"></i> Edit
-                                </button>
-                            </div>
-                        </div>
+
+        <!-- Products Table Card -->
+        <div class="card-modern">
+            <div class="card-modern-header">
+                <div class="card-modern-header-left">
+                    <div class="card-modern-header-icon">
+                        <i class="fas fa-boxes"></i>
                     </div>
-                <?php endforeach; ?>
+                    <h5>All Products</h5>
+                    <span class="count-badge">{{ $products->count() }} items</span>
+                </div>
+
+                <!-- Search -->
+                <div class="search-inner">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="productSearch" placeholder="Search products…">
+                </div>
             </div>
-        <?php endif; ?>
+
+            <div class="table-responsive">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Stock</th>
+                            <th>Price</th>
+                            <th>Description</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTableBody">
+                        @forelse($products as $product)
+                            <tr data-name="{{ strtolower($product->product_name) }}"
+                                data-generic="{{ strtolower($product->generic_name ?? '') }}"
+                                data-category="{{ strtolower($product->category->category_name ?? '') }}">
+                                <td>
+                                    <div class="product-cell">
+                                        <div class="product-icon-wrap">
+                                            <i class="fas fa-pills"></i>
+                                        </div>
+                                        <div>
+                                            <div class="product-name-main">{{ $product->product_name }}</div>
+                                            @if($product->generic_name)
+                                                <div class="product-name-generic">{{ $product->generic_name }}</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="category-chip">
+                                        {{ $product->category->category_name ?? 'Uncategorized' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="stock-badge {{ $product->stock_quantity < 10 ? 'low' : 'ok' }}">
+                                        {{ $product->stock_quantity }} units
+                                    </span>
+                                </td>
+                                <td class="price-cell">₱{{ number_format($product->price, 2) }}</td>
+                                <td style="color:#8B7A9A; font-size:0.82rem; max-width:220px;">
+                                    {{ Str::limit($product->description ?? '—', 60) }}
+                                </td>
+                                <td>
+                                    <a href="{{ route('editor.products.edit', $product) }}" class="btn-action-sm btn-edit" title="Edit Product">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <i class="fas fa-inbox"></i>
+                                        <p>No products yet</p>
+                                        <small>Add your first product to get started</small>
+                                        <br>
+                                        <a href="{{ route('editor.products.create') }}" class="btn-add-empty">
+                                            <i class="fas fa-plus"></i> Add Product
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            @if($products->count() > 0)
+            <div class="card-modern-footer">
+                <span class="footer-info">Showing {{ $products->count() }} product(s)</span>
+                <a href="{{ route('editor.products.create') }}" class="btn-view-all">
+                    <i class="fas fa-plus"></i> Add New Product
+                </a>
+            </div>
+            @endif
+        </div>
+
     </div>
-    
-    <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-3 mt-5">
-        <p>&copy; <?php echo date('Y'); ?> <?php echo APP_NAME; ?>. All rights reserved.</p>
-    </footer>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.all.min.js"></script>
-    <script>
-        function editProduct(productId) {
-            // Placeholder for edit functionality
-            Swal.fire({
-                title: 'Edit Product',
-                text: 'Product editing functionality coming soon',
-                icon: 'info'
-            });
-        }
-    </script>
-</body>
-</html>
+</div>
+
+@push('scripts')
+<script>
+document.getElementById('productSearch').addEventListener('keyup', function () {
+    const query = this.value.toLowerCase().trim();
+    document.querySelectorAll('#productsTableBody tr[data-name]').forEach(row => {
+        const matches = query === '' ||
+            row.dataset.name.includes(query) ||
+            row.dataset.generic.includes(query) ||
+            row.dataset.category.includes(query);
+        row.style.display = matches ? '' : 'none';
+    });
+});
+</script>
+@endpush
+
+@endsection

@@ -7,9 +7,9 @@ $user_id = $_SESSION['user_id'];
 $customer = new Customer($user_id);
 
 // Handle remove from cart
-if (isset($_GET['remove'])) {
+if (isset($_POST['remove_item'])) {
     try {
-        $customer->removeFromCart((int)$_GET['remove']);
+        $customer->removeFromCart((int)$_POST['remove_item']);
         showSuccess('Item removed from cart');
         header('Location: cart.php');
         exit;
@@ -164,9 +164,12 @@ $page_title = 'Shopping Cart';
                                     </div>
                                     <div class="col-md-2 text-end">
                                         <p class="mb-0"><strong><?php echo formatCurrency($item['price'] * $item['quantity']); ?></strong></p>
-                                        <a href="cart.php?remove=<?php echo $item['cart_id']; ?>" class="btn btn-sm btn-danger mt-2">
-                                            <i class="fas fa-trash"></i> Remove
-                                        </a>
+                                        <form method="POST" action="cart.php" style="display: inline;">
+                                            <input type="hidden" name="remove_item" value="<?php echo $item['cart_id']; ?>">
+                                            <button type="submit" class="btn btn-sm btn-danger mt-2" onclick="return confirm('Remove this item from cart?');">
+                                                <i class="fas fa-trash"></i> Remove
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

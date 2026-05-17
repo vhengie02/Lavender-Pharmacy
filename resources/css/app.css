@@ -76,4 +76,14 @@
     body {
         @apply bg-background text-foreground antialiased;
     }
+
+    /* Font Awesome icon fix */
+    i[class^="fa-"],
+    i[class*=" fa-"],
+    .fas,
+    .far,
+    .fal,
+    .fab {
+        display: inline-block;
+    }
 }

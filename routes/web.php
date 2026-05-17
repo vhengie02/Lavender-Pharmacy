@@ -67,12 +67,14 @@ Route::middleware('auth')->group(function () {
             $receipts = \App\Models\Receipt::with('order.user')->orderBy('date_created', 'desc')->paginate(15);
             return view('admin.receipts', ['receipts' => $receipts]);
         })->name('receipts.index');
+        Route::get('/reports', [EditorUiController::class, 'reports'])->name('reports');
     });
 
     Route::middleware('role:editor')->prefix('editor')->name('editor.')->group(function () {
         Route::get('/dashboard', [EditorController::class, 'dashboard'])->name('dashboard');
         Route::resource('products', EditorController::class, ['except' => ['show']]);
         Route::get('/pos', [EditorUiController::class, 'pos'])->name('pos');
+        Route::post('/pos/checkout', [EditorUiController::class, 'checkout'])->name('pos.checkout');
         Route::get('/receipts', [EditorUiController::class, 'receipts'])->name('receipts');
         Route::get('/reports', [EditorUiController::class, 'reports'])->name('reports');
         Route::get('/settings', [EditorUiController::class, 'settings'])->name('settings');
