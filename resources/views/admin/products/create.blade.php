@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit ' . $product->product_name)
+@section('title', 'Add New Product - Admin')
 
 @section('content')
 <style>
@@ -159,8 +159,8 @@
         <div class="dashboard-header">
             <div class="dashboard-header-inner">
                 <div>
-                    <h1><i class="fas fa-edit header-icon"></i>Edit Product</h1>
-                    <p>Update product information in your pharmacy catalog</p>
+                    <h1><i class="fas fa-plus-circle header-icon"></i>Add New Product</h1>
+                    <p>Create a new product in your pharmacy catalog</p>
                 </div>
             </div>
         </div>
@@ -175,9 +175,8 @@
                     </div>
                 @endif
 
-                <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
 
                     <!-- Basic Information -->
                     <div class="form-section">
@@ -186,7 +185,7 @@
                         <div class="form-group">
                             <label for="product_name" class="form-label">Product Name <span class="required">*</span></label>
                             <input type="text" class="form-control @error('product_name') is-invalid @enderror"
-                                   id="product_name" name="product_name" value="{{ old('product_name', $product->product_name) }}" required>
+                                   id="product_name" name="product_name" value="{{ old('product_name') }}" required>
                             @error('product_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
@@ -194,14 +193,14 @@
                             <div class="form-group">
                                 <label for="generic_name" class="form-label">Generic Name</label>
                                 <input type="text" class="form-control @error('generic_name') is-invalid @enderror"
-                                       id="generic_name" name="generic_name" value="{{ old('generic_name', $product->generic_name) }}">
+                                       id="generic_name" name="generic_name" value="{{ old('generic_name') }}">
                                 @error('generic_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
 
                             <div class="form-group">
                                 <label for="brand_name" class="form-label">Brand Name</label>
                                 <input type="text" class="form-control @error('brand_name') is-invalid @enderror"
-                                       id="brand_name" name="brand_name" value="{{ old('brand_name', $product->brand_name) }}">
+                                       id="brand_name" name="brand_name" value="{{ old('brand_name') }}">
                                 @error('brand_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                         </div>
@@ -212,7 +211,7 @@
                                     id="category_id" name="category_id" required>
                                 <option value="">Select Category</option>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->category_id }}" {{ old('category_id', $product->category_id) == $category->category_id ? 'selected' : '' }}>
+                                    <option value="{{ $category->category_id }}" {{ old('category_id') == $category->category_id ? 'selected' : '' }}>
                                         {{ $category->category_name }}
                                     </option>
                                 @endforeach
@@ -228,7 +227,7 @@
                         <div class="form-group">
                             <label for="description" class="form-label">Description</label>
                             <textarea class="form-control @error('description') is-invalid @enderror"
-                                      id="description" name="description">{{ old('description', $product->description) }}</textarea>
+                                      id="description" name="description">{{ old('description') }}</textarea>
                             @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
@@ -245,14 +244,14 @@
                                 <label for="dosage_info" class="form-label">Dosage Info</label>
                                 <input type="text" class="form-control @error('dosage_info') is-invalid @enderror"
                                        id="dosage_info" name="dosage_info" placeholder="e.g., 500mg"
-                                       value="{{ old('dosage_info', $product->dosage_info) }}">
+                                       value="{{ old('dosage_info') }}">
                                 @error('dosage_info')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
 
                             <div class="form-group">
                                 <label for="manufacturer" class="form-label">Manufacturer</label>
                                 <input type="text" class="form-control @error('manufacturer') is-invalid @enderror"
-                                       id="manufacturer" name="manufacturer" value="{{ old('manufacturer', $product->manufacturer) }}">
+                                       id="manufacturer" name="manufacturer" value="{{ old('manufacturer') }}">
                                 @error('manufacturer')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                         </div>
@@ -260,7 +259,7 @@
                         <div class="form-group">
                             <label for="barcode" class="form-label">Barcode</label>
                             <input type="text" class="form-control @error('barcode') is-invalid @enderror"
-                                   id="barcode" name="barcode" value="{{ old('barcode', $product->barcode) }}">
+                                   id="barcode" name="barcode" value="{{ old('barcode') }}">
                             @error('barcode')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                     </div>
@@ -273,14 +272,14 @@
                             <div class="form-group">
                                 <label for="price" class="form-label">Price (₱) <span class="required">*</span></label>
                                 <input type="number" step="0.01" class="form-control @error('price') is-invalid @enderror"
-                                       id="price" name="price" value="{{ old('price', $product->price) }}" required>
+                                       id="price" name="price" value="{{ old('price') }}" required>
                                 @error('price')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
 
                             <div class="form-group">
                                 <label for="stock_quantity" class="form-label">Stock Quantity <span class="required">*</span></label>
                                 <input type="number" class="form-control @error('stock_quantity') is-invalid @enderror"
-                                       id="stock_quantity" name="stock_quantity" value="{{ old('stock_quantity', $product->stock_quantity) }}" required>
+                                       id="stock_quantity" name="stock_quantity" value="{{ old('stock_quantity') }}" required>
                                 @error('stock_quantity')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                         </div>
@@ -289,7 +288,7 @@
                             <div class="form-group">
                                 <label for="expiration_date" class="form-label">Expiration Date <span class="required">*</span></label>
                                 <input type="date" class="form-control @error('expiration_date') is-invalid @enderror"
-                                       id="expiration_date" name="expiration_date" value="{{ old('expiration_date', $product->expiration_date) }}" required>
+                                       id="expiration_date" name="expiration_date" value="{{ old('expiration_date') }}" required>
                                 @error('expiration_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
 
@@ -297,7 +296,7 @@
                                 <label for="prescription_required" class="form-label">&nbsp;</label>
                                 <div class="form-check" style="margin-bottom: 0;">
                                     <input class="form-check-input" type="checkbox" id="prescription_required"
-                                           name="prescription_required" value="1" {{ old('prescription_required', $product->prescription_required) ? 'checked' : '' }}>
+                                           name="prescription_required" value="1" {{ old('prescription_required') ? 'checked' : '' }}>
                                     <label class="form-check-label" for="prescription_required">
                                         Requires Prescription
                                     </label>
@@ -309,9 +308,9 @@
                     <!-- Buttons -->
                     <div class="button-group">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Update Product
+                            <i class="fas fa-save"></i> Add Product
                         </button>
-                        <a href="{{ route('admin.products.show', $product) }}" class="btn btn-secondary">
+                        <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
                             <i class="fas fa-times"></i> Cancel
                         </a>
                     </div>

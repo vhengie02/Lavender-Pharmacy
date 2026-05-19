@@ -29,15 +29,59 @@
         pointer-events: none;
     }
     .dashboard-header-inner {
-        display: flex;
-        align-items: center;
+        display: flex; align-items: center;
         justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 16px;
+        flex-wrap: wrap; gap: 16px;
     }
     .dashboard-header h1 { font-size: 1.9rem; font-weight: 700; margin-bottom: 6px; color: white; }
     .dashboard-header p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
     .dashboard-header i.header-icon { margin-right: 10px; opacity: 0.85; }
+
+    /* ── Header search / filter form ── */
+    .header-search {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-shrink: 0;
+        flex-wrap: wrap;
+    }
+    .header-search-inner {
+        display: flex; gap: 0;
+        background: rgba(255,255,255,0.15);
+        border: 1.5px solid rgba(255,255,255,0.35);
+        border-radius: 9px;
+        overflow: hidden;
+        align-items: center;
+    }
+    .header-search-inner i {
+        padding: 0 10px;
+        color: rgba(255,255,255,0.7);
+        font-size: 0.85rem;
+        flex-shrink: 0;
+    }
+    .header-search-inner input {
+        background: transparent;
+        border: none;
+        outline: none;
+        padding: 9px 12px 9px 0;
+        font-size: 0.875rem;
+        color: white;
+        min-width: 180px;
+    }
+    .header-search-inner input::placeholder { color: rgba(255,255,255,0.55); }
+    .btn-search {
+        padding: 10px 18px;
+        background: rgba(255,255,255,0.2);
+        border: none;
+        border-left: 1.5px solid rgba(255,255,255,0.25);
+        color: white;
+        font-size: 0.82rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+        white-space: nowrap;
+    }
+    .btn-search:hover { background: rgba(255,255,255,0.3); }
 
     .btn-add-header {
         display: inline-flex;
@@ -62,43 +106,6 @@
         transform: translateY(-1px);
     }
 
-    /* ── Card shell ── */
-    .card-modern {
-        background: white;
-        border: none;
-        border-radius: 14px;
-        box-shadow: 0 2px 12px rgba(93, 58, 102, 0.07);
-        overflow: hidden;
-    }
-    .card-modern-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 18px 24px;
-        border-bottom: 1px solid #F0E8FA;
-        flex-wrap: wrap;
-        gap: 12px;
-    }
-    .card-modern-header-left { display: flex; align-items: center; gap: 12px; }
-    .card-modern-header-icon {
-        width: 36px; height: 36px;
-        background: linear-gradient(135deg, #8B4DAB, #C8A2C8);
-        border-radius: 9px;
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0;
-    }
-    .card-modern-header-icon i { color: white; font-size: 0.9rem; }
-    .card-modern-header h5 { font-size: 1rem; font-weight: 700; color: #3D2549; margin: 0; }
-
-    .count-badge {
-        background: #F0E8FA;
-        color: #7A4F85;
-        font-size: 0.72rem;
-        font-weight: 700;
-        padding: 3px 9px;
-        border-radius: 20px;
-    }
-
     /* ── Search ── */
     .search-wrap { padding: 16px 24px; border-bottom: 1px solid #F0E8FA; }
     .search-inner {
@@ -118,25 +125,7 @@
     }
     .search-inner input::placeholder { color: #C0A8D8; }
 
-    /* ── Products table ── */
-    .orders-table { width: 100%; border-collapse: collapse; }
-    .orders-table thead tr { background: #FDFAFF; }
-    .orders-table th {
-        padding: 11px 20px;
-        font-size: 0.72rem; font-weight: 700;
-        text-transform: uppercase; letter-spacing: 0.8px;
-        color: #9B7BAB; border-bottom: 1px solid #F0E8FA; white-space: nowrap;
-    }
-    .orders-table td {
-        padding: 14px 20px;
-        font-size: 0.875rem; color: #4A3655;
-        border-bottom: 1px solid #F8F3FC; vertical-align: middle;
-    }
-    .orders-table tbody tr:last-child td { border-bottom: none; }
-    .orders-table tbody tr { transition: background 0.15s ease; }
-    .orders-table tbody tr:hover td { background: #FBF7FF; }
-
-    /* Product name cell */
+    /* Product icon and name */
     .product-cell { display: flex; align-items: center; gap: 12px; }
     .product-icon-wrap {
         width: 38px; height: 38px;
@@ -170,14 +159,11 @@
     }
 
     /* Action buttons */
-    .btn-action-sm {
+    .btn-edit {
         width: 32px; height: 32px; border-radius: 8px;
+        border: 1.5px solid #DFC8F5; background: white; color: #8B4DAB;
         display: inline-flex; align-items: center; justify-content: center;
         font-size: 0.8rem; transition: all 0.2s ease; text-decoration: none;
-        cursor: pointer; border: 1.5px solid;
-    }
-    .btn-edit {
-        border-color: #DFC8F5; background: white; color: #8B4DAB;
     }
     .btn-edit:hover { background: #8B4DAB; color: white; border-color: #8B4DAB; box-shadow: 0 3px 8px rgba(139,77,171,0.3); }
 
@@ -197,22 +183,102 @@
     }
     .btn-add-empty:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(139,77,171,0.4); color: white; text-decoration: none; }
 
-    /* Footer */
+    /* ── Card shell ── */
+    .card-modern {
+        background: white; border: none; border-radius: 14px;
+        box-shadow: 0 2px 12px rgba(93, 58, 102, 0.07); overflow: hidden;
+    }
+    .card-modern-header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 18px 24px; border-bottom: 1px solid #F0E8FA;
+        flex-wrap: wrap; gap: 12px;
+    }
+    .card-modern-header-left { display: flex; align-items: center; gap: 12px; }
+    .card-modern-header-icon {
+        width: 36px; height: 36px;
+        background: linear-gradient(135deg, #8B4DAB, #C8A2C8);
+        border-radius: 9px;
+        display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .card-modern-header-icon i { color: white; font-size: 0.9rem; }
+    .card-modern-header h5 { font-size: 1rem; font-weight: 700; color: #3D2549; margin: 0; }
+    .count-badge {
+        background: #F0E8FA; color: #7A4F85;
+        font-size: 0.72rem; font-weight: 700;
+        padding: 3px 9px; border-radius: 20px;
+    }
+
+    /* Active filter chips */
+    .search-active-chip {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: #EFE0FF; color: #6B3D8F;
+        font-size: 0.72rem; font-weight: 700;
+        padding: 3px 10px; border-radius: 20px;
+        border: 1px solid #D4B0F0;
+    }
+    .search-active-chip a {
+        color: #9B5CC0; text-decoration: none; margin-left: 2px;
+        font-size: 0.8rem; line-height: 1;
+    }
+    .search-active-chip a:hover { color: #5D3A66; }
+
+    /* ── Table ── */
+    .orders-table { width: 100%; border-collapse: collapse; }
+    .orders-table thead tr { background: #FDFAFF; }
+    .orders-table th {
+        padding: 11px 20px; font-size: 0.72rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.8px;
+        color: #9B7BAB; border-bottom: 1px solid #F0E8FA; white-space: nowrap;
+    }
+    .orders-table th.text-right { text-align: right; }
+    .orders-table td {
+        padding: 14px 20px; font-size: 0.875rem; color: #4A3655;
+        border-bottom: 1px solid #F8F3FC; vertical-align: middle;
+    }
+    .orders-table td.text-right { text-align: right; }
+    .orders-table tbody tr:last-child td { border-bottom: none; }
+    .orders-table tbody tr { transition: background 0.15s ease; }
+    .orders-table tbody tr:hover td { background: #FBF7FF; }
+
+    /* View button */
+    .btn-view {
+        width: 32px; height: 32px; border-radius: 8px;
+        border: 1.5px solid #DFC8F5; background: white; color: #8B4DAB;
+        display: inline-flex; align-items: center; justify-content: center;
+        font-size: 0.8rem; transition: all 0.2s ease; text-decoration: none;
+    }
+    .btn-view:hover { background: #8B4DAB; color: white; border-color: #8B4DAB; box-shadow: 0 3px 8px rgba(139,77,171,0.3); text-decoration: none; }
+
+    /* Empty state */
+    .empty-state { padding: 56px 24px; text-align: center; color: #B0A0BC; }
+    .empty-state i { font-size: 2.8rem; margin-bottom: 14px; opacity: 0.3; display: block; }
+    .empty-state p { font-size: 0.9rem; margin-bottom: 4px; }
+
+    /* Footer / pagination */
     .card-modern-footer {
         padding: 14px 24px; border-top: 1px solid #F0E8FA;
-        background: #FDFAFF; display: flex; justify-content: space-between;
+        background: #FDFAFF;
+        display: flex; justify-content: space-between;
         align-items: center; flex-wrap: wrap; gap: 10px;
     }
     .footer-info { font-size: 0.78rem; color: #A08AB0; }
 
-    .btn-view-all {
-        display: inline-flex; align-items: center; gap: 8px;
-        padding: 7px 16px; border-radius: 8px;
-        border: 1.5px solid #C8A2C8; background: white; color: #7A4F85;
-        font-size: 0.82rem; font-weight: 600; text-decoration: none;
-        transition: all 0.2s ease;
+    .card-modern-footer nav { display: flex; align-items: center; }
+    .card-modern-footer .pagination { margin: 0; display: flex; gap: 4px; list-style: none; padding: 0; }
+    .card-modern-footer .page-item .page-link {
+        padding: 5px 10px; border-radius: 7px;
+        font-size: 0.8rem; font-weight: 600;
+        border: 1.5px solid #E0C8F5;
+        color: #7A4F85; background: white;
+        text-decoration: none; transition: all 0.2s;
     }
-    .btn-view-all:hover { background: #8B4DAB; color: white; border-color: #8B4DAB; text-decoration: none; }
+    .card-modern-footer .page-item.active .page-link {
+        background: linear-gradient(135deg, #8B4DAB, #B57EDC);
+        border-color: transparent; color: white;
+        box-shadow: 0 2px 8px rgba(139,77,171,0.3);
+    }
+    .card-modern-footer .page-item.disabled .page-link { opacity: 0.4; cursor: not-allowed; }
+    .card-modern-footer .page-item .page-link:hover:not(.active) { background: #F0E8FA; color: #5D3A66; }
 </style>
 
 <div class="dashboard-main">
@@ -255,17 +321,14 @@
                         <tr>
                             <th>Product</th>
                             <th>Category</th>
-                            <th>Stock</th>
-                            <th>Price</th>
-                            <th>Description</th>
+                            <th class="text-right">Price</th>
+                            <th class="text-right">Stock</th>
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody id="productsTableBody">
-                        @forelse($products as $product)
-                            <tr data-name="{{ strtolower($product->product_name) }}"
-                                data-generic="{{ strtolower($product->generic_name ?? '') }}"
-                                data-category="{{ strtolower($product->category->category_name ?? '') }}">
+                    <tbody>
+                        @forelse ($products as $product)
+                            <tr>
                                 <td>
                                     <div class="product-cell">
                                         <div class="product-icon-wrap">
@@ -281,32 +344,28 @@
                                 </td>
                                 <td>
                                     <span class="category-chip">
-                                        {{ $product->category->category_name ?? 'Uncategorized' }}
+                                        {{ $product->category->category_name ?? '—' }}
                                     </span>
                                 </td>
-                                <td>
+                                <td class="text-right price-cell">₱{{ number_format($product->price, 2) }}</td>
+                                <td class="text-right">
                                     <span class="stock-badge {{ $product->stock_quantity < 10 ? 'low' : 'ok' }}">
                                         {{ $product->stock_quantity }} units
                                     </span>
                                 </td>
-                                <td class="price-cell">₱{{ number_format($product->price, 2) }}</td>
-                                <td style="color:#8B7A9A; font-size:0.82rem; max-width:220px;">
-                                    {{ Str::limit($product->description ?? '—', 60) }}
-                                </td>
                                 <td>
-                                    <a href="{{ route('editor.products.edit', $product) }}" class="btn-action-sm btn-edit" title="Edit Product">
+                                    <a href="{{ route('editor.products.edit', $product) }}" class="btn-edit" title="Edit Product">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6">
+                                <td colspan="5">
                                     <div class="empty-state">
                                         <i class="fas fa-inbox"></i>
-                                        <p>No products yet</p>
-                                        <small>Add your first product to get started</small>
-                                        <br>
+                                        <p>No products found</p>
+                                        <small>Get started by adding your first product</small>
                                         <a href="{{ route('editor.products.create') }}" class="btn-add-empty">
                                             <i class="fas fa-plus"></i> Add Product
                                         </a>
@@ -317,30 +376,9 @@
                     </tbody>
                 </table>
             </div>
-
-            @if($products->count() > 0)
-            <div class="card-modern-footer">
-                <span class="footer-info">Showing {{ $products->count() }} product(s)</span>
-            </div>
-            @endif
         </div>
 
     </div>
 </div>
-
-@push('scripts')
-<script>
-document.getElementById('productSearch').addEventListener('keyup', function () {
-    const query = this.value.toLowerCase().trim();
-    document.querySelectorAll('#productsTableBody tr[data-name]').forEach(row => {
-        const matches = query === '' ||
-            row.dataset.name.includes(query) ||
-            row.dataset.generic.includes(query) ||
-            row.dataset.category.includes(query);
-        row.style.display = matches ? '' : 'none';
-    });
-});
-</script>
-@endpush
 
 @endsection

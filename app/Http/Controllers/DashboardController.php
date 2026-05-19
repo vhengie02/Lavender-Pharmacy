@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -30,6 +31,9 @@ class DashboardController extends Controller
             'yearly' => $this->getYearlyRevenue(),
         ];
 
+        // Get top products
+        $topProducts = $this->getTopProducts();
+
         return view('admin.dashboard', [
             'totalRevenue' => $totalRevenue,
             'totalOrders' => $totalOrders,
@@ -38,6 +42,7 @@ class DashboardController extends Controller
             'lowStockProducts' => $lowStockProducts,
             'recentOrders' => $recentOrders,
             'revenueChart' => $revenueChart,
+            'topProducts' => $topProducts,
         ]);
     }
 
@@ -130,5 +135,29 @@ class DashboardController extends Controller
         }
 
         return $result;
+    }
+
+    /**
+     * Get top selling products
+     */
+    private function getTopProducts()
+    {
+        $topProducts = OrderItem::select('product_id')
+            ->selectRaw('SUM(quantity) as units_sold')
+            ->selectRaw('SUM(quantity * price) as revenue')
+            ->with('product')
+            ->groupBy('product_id')
+            ->orderByDesc('units_sold')
+            ->limit(5)
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'product_name' => $item->product->product_name ?? 'Unknown',
+                    'units_sold' => (int) $item->units_sold,
+                    'revenue' => (float) ($item->revenue ?? 0),
+                ];
+            });
+
+        return $topProducts;
     }
 }

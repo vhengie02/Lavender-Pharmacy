@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('products', AdminProductController::class)->only([
-            'index', 'show', 'edit', 'update', 'destroy',
+            'index', 'show', 'create', 'store', 'edit', 'update', 'destroy',
         ]);
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
@@ -69,7 +69,6 @@ Route::middleware('auth')->group(function () {
             $receipts = \App\Models\Receipt::with('order.user')->orderBy('date_created', 'desc')->paginate(15);
             return view('admin.receipts', ['receipts' => $receipts]);
         })->name('receipts.index');
-        Route::get('/reports', [EditorUiController::class, 'reports'])->name('reports');
     });
 
     Route::middleware('role:editor')->prefix('editor')->name('editor.')->group(function () {

@@ -34,7 +34,7 @@ class EditorUiController extends Controller
                 'total' => 'required|numeric',
             ]);
 
-            \DB::beginTransaction();
+
 
             // Create order
             $order = Order::create([
@@ -86,7 +86,7 @@ class EditorUiController extends Controller
                 'date_created' => now(),
             ]);
 
-            \DB::commit();
+
 
             return response()->json([
                 'success' => true,
@@ -95,7 +95,7 @@ class EditorUiController extends Controller
                 'order_id' => $order->order_id,
             ]);
         } catch (\Exception $e) {
-            \DB::rollback();
+
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
@@ -108,17 +108,6 @@ class EditorUiController extends Controller
         $receipts = Receipt::with('order')->latest('date_created')->paginate(20);
 
         return view('editor.receipts.index', compact('receipts'));
-    }
-
-    public function reports()
-    {
-        $userRole = auth()->user()->role;
-        
-        if ($userRole === 'admin') {
-            return view('admin.reports.index');
-        }
-        
-        return view('editor.reports.index');
     }
 
     public function settings()

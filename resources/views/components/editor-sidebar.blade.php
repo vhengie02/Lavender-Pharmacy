@@ -3,8 +3,6 @@
         ['label' => 'Dashboard', 'route' => 'editor.dashboard', 'active' => ['editor.dashboard'], 'icon' => 'fa-chart-line'],
         ['label' => 'Point of Sale', 'route' => 'editor.pos', 'active' => ['editor.pos'], 'icon' => 'fa-cash-register'],
         ['label' => 'Products', 'route' => 'editor.products.index', 'active' => ['editor.products.*'], 'icon' => 'fa-pills'],
-    ];
-    $navReports = [
         ['label' => 'Receipts', 'route' => 'editor.receipts', 'active' => ['editor.receipts'], 'icon' => 'fa-receipt'],
     ];
 @endphp
@@ -311,18 +309,6 @@
         <p class="nav-section-title">Main Menu</p>
 
         @foreach ($navMain as $item)
-            @php($active = collect($item['active'])->contains(fn ($p) => request()->routeIs($p)))
-            <a href="{{ route($item['route']) }}" class="nav-link {{ $active ? 'active' : '' }}">
-                <i class="fas {{ $item['icon'] ?? 'fa-link' }}"></i>
-                <span>{{ $item['label'] }}</span>
-            </a>
-        @endforeach
-
-        <div class="sidebar-divider"></div>
-
-        <p class="nav-section-title">Reports</p>
-
-        @foreach ($navReports as $item)
             @php($active = collect($item['active'])->contains(fn ($p) => request()->routeIs($p)))
             <a href="{{ route($item['route']) }}" class="nav-link {{ $active ? 'active' : '' }}">
                 <i class="fas {{ $item['icon'] ?? 'fa-link' }}"></i>

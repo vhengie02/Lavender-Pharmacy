@@ -82,6 +82,29 @@
     }
     .btn-search:hover { background: rgba(255,255,255,0.3); }
 
+    .btn-add-header {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: rgba(255,255,255,0.18);
+        border: 1.5px solid rgba(255,255,255,0.4);
+        color: white;
+        border-radius: 9px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .btn-add-header:hover {
+        background: rgba(255,255,255,0.28);
+        color: white;
+        text-decoration: none;
+        transform: translateY(-1px);
+    }
+
     /* ── Card shell ── */
     .card-modern {
         background: white; border: none; border-radius: 14px;
@@ -222,18 +245,23 @@
                     <h1><i class="fas fa-pills header-icon"></i>Products</h1>
                     <p>Catalog administration</p>
                 </div>
-                <form action="{{ route('admin.products.index') }}" method="GET" class="header-search">
-                    <div class="header-search-inner">
-                        <i class="fas fa-search"></i>
-                        <input
-                            type="text"
-                            name="search"
-                            value="{{ request('search') }}"
-                            placeholder="Search products…"
-                        >
-                        <button type="submit" class="btn-search">Search</button>
-                    </div>
-                </form>
+                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                    <form action="{{ route('admin.products.index') }}" method="GET" class="header-search">
+                        <div class="header-search-inner">
+                            <i class="fas fa-search"></i>
+                            <input
+                                type="text"
+                                name="search"
+                                value="{{ request('search') }}"
+                                placeholder="Search products…"
+                            >
+                            <button type="submit" class="btn-search">Search</button>
+                        </div>
+                    </form>
+                    <a href="{{ route('admin.products.create') }}" class="btn-add-header">
+                        <i class="fas fa-plus"></i> Add Product
+                    </a>
+                </div>
             </div>
         </div>
 

@@ -322,7 +322,7 @@
         <!-- Header -->
         <div class="dashboard-header">
             <h1><i class="fas fa-cash-register header-icon"></i>Point of Sale</h1>
-            <p>In-store checkout — press <strong style="color:white;">Ctrl+O</strong> to complete order, <strong style="color:white;">Esc</strong> to clear search</p>
+            <p>In-store checkout<strong style="color:white;"></strong> <strong style="color:white;"></strong></p>
         </div>
 
         <div class="pos-layout">

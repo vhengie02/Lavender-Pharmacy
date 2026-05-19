@@ -3,10 +3,7 @@
         ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'active' => ['admin.dashboard'], 'icon' => 'fa-chart-line'],
         ['label' => 'Products', 'route' => 'admin.products.index', 'active' => ['admin.products.*'], 'icon' => 'fa-pills'],
         ['label' => 'Orders', 'route' => 'admin.orders.index', 'active' => ['admin.orders.*'], 'icon' => 'fa-shopping-bag'],
-    ];
-    $navReports = [
         ['label' => 'Receipts', 'route' => 'admin.receipts.index', 'active' => ['admin.receipts.index'], 'icon' => 'fa-receipt'],
-        ['label' => 'Reports', 'route' => 'admin.reports', 'active' => ['admin.reports'], 'icon' => 'fa-chart-bar'],
     ];
     $navQuickActions = [
         ['label' => 'View Shop', 'route' => 'home', 'icon' => 'fa-store'],
@@ -346,16 +343,6 @@
         @endforeach
 
         <div class="sidebar-divider"></div>
-
-        <p class="nav-section-title">Reports</p>
-
-        @foreach ($navReports as $item)
-            @php($active = collect($item['active'])->contains(fn ($p) => request()->routeIs($p)))
-            <a href="{{ route($item['route']) }}" class="nav-link {{ $active ? 'active' : '' }}">
-                <i class="fas {{ $item['icon'] ?? 'fa-link' }}"></i>
-                <span>{{ $item['label'] }}</span>
-            </a>
-        @endforeach
     </nav>
 
     <!-- Quick Actions -->

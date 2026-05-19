@@ -17,8 +17,8 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-muted-foreground uppercase">Total Sales</p>
-                    <p class="mt-2 text-2xl font-bold text-foreground">₱0.00</p>
-                    <p class="mt-1 text-xs text-muted-foreground">This period</p>
+                    <p class="mt-2 text-2xl font-bold text-foreground">₱{{ number_format($totalSales, 2) }}</p>
+                    <p class="mt-1 text-xs text-muted-foreground">From completed orders</p>
                 </div>
                 <div class="text-3xl text-primary/20">
                     <i class="fas fa-chart-line"></i>
@@ -31,7 +31,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-muted-foreground uppercase">Orders</p>
-                    <p class="mt-2 text-2xl font-bold text-foreground">0</p>
+                    <p class="mt-2 text-2xl font-bold text-foreground">{{ $totalOrders }}</p>
                     <p class="mt-1 text-xs text-muted-foreground">Completed</p>
                 </div>
                 <div class="text-3xl text-primary/20">
@@ -45,7 +45,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-muted-foreground uppercase">Items Sold</p>
-                    <p class="mt-2 text-2xl font-bold text-foreground">0</p>
+                    <p class="mt-2 text-2xl font-bold text-foreground">{{ $totalItemsSold }}</p>
                     <p class="mt-1 text-xs text-muted-foreground">Total units</p>
                 </div>
                 <div class="text-3xl text-primary/20">
@@ -59,7 +59,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-muted-foreground uppercase">Low Stock</p>
-                    <p class="mt-2 text-2xl font-bold text-foreground">0</p>
+                    <p class="mt-2 text-2xl font-bold text-foreground">{{ $lowStockProducts }}</p>
                     <p class="mt-1 text-xs text-muted-foreground">Products</p>
                 </div>
                 <div class="text-3xl text-destructive/20">
@@ -111,12 +111,21 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-border">
-                    <tr>
-                        <td colspan="4" class="px-4 py-8 text-center text-muted-foreground">
-                            <i class="fas fa-inbox text-2xl mb-2 block opacity-50"></i>
-                            <p>No sales data available yet.</p>
-                        </td>
-                    </tr>
+                    @forelse($topProducts as $product)
+                        <tr>
+                            <td class="px-4 py-4 font-medium">{{ $product['product_name'] }}</td>
+                            <td class="px-4 py-4">{{ $product['units_sold'] }}</td>
+                            <td class="px-4 py-4">₱{{ number_format($product['revenue'], 2) }}</td>
+                            <td class="px-4 py-4">{{ $totalSales > 0 ? round(($product['revenue'] / $totalSales) * 100, 1) : 0 }}%</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-4 py-8 text-center text-muted-foreground">
+                                <i class="fas fa-inbox text-2xl mb-2 block opacity-50"></i>
+                                <p>No sales data available yet.</p>
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

@@ -37,7 +37,23 @@ class AdminOrderController extends Controller
 
         $orders = $query->latest('date_ordered')->paginate(15);
 
-        return view('admin.orders.index', ['orders' => $orders]);
+        // Get dashboard metrics
+        $totalRevenue = Order::where('order_status', 'completed')->sum('total_amount');
+        $totalOrders = Order::count();
+        $totalProducts = \App\Models\Product::count();
+        $totalUsers = \App\Models\User::count();
+        $lowStockProducts = \App\Models\Product::where('stock_quantity', '<', 10)->count();
+        $recentOrders = $orders->take(5);
+
+        return view('admin.orders.index', [
+            'orders' => $orders,
+            'totalRevenue' => $totalRevenue,
+            'totalOrders' => $totalOrders,
+            'totalProducts' => $totalProducts,
+            'totalUsers' => $totalUsers,
+            'lowStockProducts' => $lowStockProducts,
+            'recentOrders' => $recentOrders,
+        ]);
     }
 
     /**

@@ -53,6 +53,46 @@ class AdminProductController extends Controller
     }
 
     /**
+     * Show create product form
+     */
+    public function create()
+    {
+        $categories = Category::all();
+        return view('admin.products.create', [
+            'categories' => $categories,
+        ]);
+    }
+
+    /**
+     * Store a new product
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'product_name' => 'required|string|max:255',
+            'generic_name' => 'nullable|string|max:255',
+            'brand_name' => 'nullable|string|max:255',
+            'category_id' => 'required|exists:categories,category_id',
+            'description' => 'nullable|string',
+            'dosage_info' => 'nullable|string|max:255',
+            'price' => 'required|numeric|min:0.01',
+            'stock_quantity' => 'required|integer|min:0',
+            'expiration_date' => 'required|date',
+            'manufacturer' => 'nullable|string|max:255',
+            'barcode' => 'nullable|string|unique:products,barcode',
+            'prescription_required' => 'boolean',
+        ]);
+
+        $validated['date_created'] = now();
+        $validated['date_updated'] = now();
+        $validated['prescription_required'] = $request->has('prescription_required');
+
+        Product::create($validated);
+
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully');
+    }
+
+    /**
      * Show product details
      */
     public function show(Product $product)
