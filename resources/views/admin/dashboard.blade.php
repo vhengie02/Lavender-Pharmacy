@@ -298,7 +298,7 @@
                             <h5>Recent Orders</h5>
                             <span class="order-count-badge">{{ $recentOrders->count() }} latest</span>
                         </div>
-                        <a href="{{ route('orders.index') }}" class="btn-view-all" style="font-size:0.8rem; padding:6px 14px;">
+                        <a href="{{ route('admin.orders.index') }}" class="btn-view-all" style="font-size:0.8rem; padding:6px 14px;">
                             <i class="fas fa-arrow-right"></i> View All
                         </a>
                     </div>
@@ -354,7 +354,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('orders.show', $order) }}" class="btn-view" title="View Order">
+                                            <a href="{{ route('admin.orders.show', $order) }}" class="btn-view" title="View Order">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                         </td>
@@ -371,12 +371,6 @@
                                 @endforelse
                             </tbody>
                         </table>
-                    </div>
-
-                    <div class="card-modern-footer">
-                        <a href="{{ route('orders.index') }}" class="btn-view-all">
-                            <i class="fas fa-list"></i> View All Orders
-                        </a>
                     </div>
                 </div>
             </div>
@@ -407,9 +401,9 @@
  *   ];
  */
 const chartData = {
-    monthly: @json($revenueChart['monthly'] ?? []),
-    weekly:  @json($revenueChart['weekly']  ?? []),
-    yearly:  @json($revenueChart['yearly']  ?? []),
+    monthly: <?php echo json_encode($revenueChart['monthly'] ?? []); ?>,
+    weekly:  <?php echo json_encode($revenueChart['weekly'] ?? []); ?>,
+    yearly:  <?php echo json_encode($revenueChart['yearly'] ?? []); ?>,
 };
 
 function buildDataset(entries) {
